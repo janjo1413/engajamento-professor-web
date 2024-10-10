@@ -26,11 +26,14 @@ export default function Final({ onFinishResults }) {
         getPodium();
     }, []);
 
-    const handleEnd = () => {
+    const handleEnd = async () => {
         if (intervalId) {
             clearInterval(intervalId);
         }
         onFinishResults();
+
+        await api.get('/limparEstado').then(response => console.log(response));
+
         navigate('/');
     };
 
