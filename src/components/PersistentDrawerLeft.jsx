@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MuiAppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight, Menu, Quiz, School } from '@mui/icons-material';
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
 );
 
-const AppBar = styled(MuiAppBar, {
+const AppBar = styled(AppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
     transition: theme.transitions.create(['margin', 'width'], {
