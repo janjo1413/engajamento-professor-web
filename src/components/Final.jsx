@@ -1,8 +1,8 @@
-import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Skeleton, Stack, Typography } from "@mui/material";
 import api from "../services/api";
-import Podium from "../components/Podium";
+import Podium from "./Podium";
 
 export default function Final({ onFinishResults }) {
     const navigate = useNavigate();

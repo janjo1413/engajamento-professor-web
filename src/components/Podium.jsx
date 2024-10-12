@@ -4,9 +4,7 @@ import { EmojiEvents } from '@mui/icons-material';
 import getFirstNames from '../utils/getFirstNames';
 
 const Podium = ({ students }) => {
-  // Ordena alunos por pontuação
-  //const sortedStudents = students.sort((a, b) => b.pontuacao - a.pontuacao).slice(0, 3);
-  const podiumStudents = students.slice(0, 3);
+   const podiumStudents = students.slice(0, 3);
 
   const setMedalColor = (index) => {
     if (index === 0) {

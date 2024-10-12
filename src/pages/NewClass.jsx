@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Grid, OutlinedInput } from "@mui/material";
-import Dropzone from "../components/Dropzone";
 import { Save } from '@mui/icons-material';
+import Dropzone from "../components/Dropzone";
 
 const saveClass = () => {
     console.log('SALVEI A TURMA');

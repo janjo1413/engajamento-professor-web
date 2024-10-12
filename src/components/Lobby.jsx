@@ -1,6 +1,5 @@
-import { Avatar, Button, Card, CardHeader, Container, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { Avatar, Button, Card, CardHeader, Container, Grid, Typography } from "@mui/material";
 import api from '../services/api';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import getFirstNames from "../utils/getFirstNames";
@@ -31,7 +30,6 @@ export default function Lobby({ onStartQuiz }) {
     const [intervalId, setIntervalId] = useState(null);
 
     const { quiz, setQuiz, classRoom } = useQuizClass();
-    // const navigate = useNavigate();
 
     useEffect(() => {
         const reset = async () => {

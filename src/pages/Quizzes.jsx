@@ -99,7 +99,7 @@ export default function Quizzes() {
 
     return (
         <Box m={2}>
-            <h2>Meus Quizzes</h2>
+            <h2>Meus Questionários</h2>
 
             <Grid container spacing={4}>
 

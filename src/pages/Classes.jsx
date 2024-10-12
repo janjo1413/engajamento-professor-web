@@ -1,9 +1,7 @@
-import { Card, CardContent, CardMedia, CardActionArea, Typography, Grid, Fab, Skeleton, Box, Button, CardActions } from '@mui/material';
 import { useMemo } from 'react';
-import AddIcon from '@mui/icons-material/Add';
-
 import { Link } from 'react-router-dom';
-
+import { Card, CardContent, CardMedia, CardActionArea, Typography, Grid, Fab, Skeleton, Box, Button, CardActions } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import useClasses from '../hooks/useClasses';
 import getRandomImage from '../utils/getRandomImage';
 
@@ -12,7 +10,6 @@ const fabStyle = {
     bottom: 30,
     right: 30
 };
-
 
 const ClassCard = ({ classroom }) => {
     const randomImage = useMemo(() => getRandomImage('class'), []);
@@ -58,7 +55,6 @@ export default function Classes() {
             <h2>Minhas turmas</h2>
 
             <Grid container spacing={4}>
-
                 {
                     classes ? (
 
