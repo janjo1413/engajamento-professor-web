@@ -1,8 +1,24 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
-import { MuiAppBar } from '@mui/material/AppBar';
-import { ChevronLeft, ChevronRight, Menu, Quiz, School } from '@mui/icons-material';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
+import QuizIcon from '@mui/icons-material/Quiz';
+import ClassIcon from '@mui/icons-material/School';
+
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import Quizzes from '../pages/Quizzes';
@@ -95,7 +111,7 @@ export default function PersistentDrawerLeft() {
                         sx={{ mr: 2, ...(open && { display: 'none' }) }}
                         disabled={isQuizScreen}
                     >
-                        <Menu />
+                        <MenuIcon />
                     </IconButton>
 
                     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -124,7 +140,7 @@ export default function PersistentDrawerLeft() {
             >
                 <DrawerHeader sx={{ py: 2.45 }} > 
                     <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeft /> : <ChevronRight />}
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                     </IconButton>
                 </DrawerHeader>
 
@@ -134,7 +150,7 @@ export default function PersistentDrawerLeft() {
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/quizzes">
                             <ListItemIcon>
-                                <Quiz />
+                                <QuizIcon />
                             </ListItemIcon>
                             <ListItemText primary="Quizzes" />
                         </ListItemButton>
@@ -143,7 +159,7 @@ export default function PersistentDrawerLeft() {
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/classes">
                             <ListItemIcon>
-                                <School />
+                                <ClassIcon />
                             </ListItemIcon>
                             <ListItemText primary="Classes" />
                         </ListItemButton>
