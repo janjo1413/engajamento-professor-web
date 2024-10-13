@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import api from '../services/api';
 import { Button, CircularProgress, IconButton, Paper, Stack } from "@mui/material";
-import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
+import { RemoveRedEye, VisibilityOff, Close } from '@mui/icons-material';
 import { useQuizClass } from '../contexts/QuizClassContext';
 
 export default function ShowQuestion({ onFinishQuiz }) {
@@ -55,6 +55,22 @@ export default function ShowQuestion({ onFinishQuiz }) {
         justifyContent: "center",
         alignItems: "center",
       }}>
+
+      <AppBar position="static">
+        <div style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <img src={logo} alt="Logo" />
+          <Typography variant="h6" noWrap component="div">
+            EngageQuiz
+          </Typography>
+        </div>
+
+        <IconButton size="large" color="error" aria-label="Cancelar Questionário" sx={{ mr: 2 }}>
+          <Close/>
+        </IconButton>
+
+      </AppBar>
+
+
       {
         timeIsOver ? (
           <Typography variant="h5">Tempo esgotado</Typography>
