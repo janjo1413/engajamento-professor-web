@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 const baseStyle = {
@@ -6,7 +6,8 @@ const baseStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: '20px',
+    padding: '10px',
+    marginTop: 10,
     borderWidth: 2,
     borderRadius: 2,
     borderColor: '#cccccc',
@@ -33,6 +34,23 @@ const rejectStyle = {
 };
 
 export default function Dropzone(props) {
+    const onDrop = useCallback((acceptedFiles) => {
+        acceptedFiles.forEach((file) => {
+        //   const reader = new FileReader()
+    
+        //   reader.onabort = () => console.log('file reading was aborted')
+        //   reader.onerror = () => console.log('file reading has failed')
+        //   reader.onload = () => {
+        //   // Do whatever you want with the file contents
+        //     const binaryStr = reader.result
+        //     console.log(binaryStr)
+        //   }
+        //   reader.readAsArrayBuffer(file)
+        console.log(file)
+        })
+        
+      }, [])
+
     const {
         getRootProps,
         getInputProps,
@@ -46,7 +64,8 @@ export default function Dropzone(props) {
             'text/csv': ['.csv'],
             'application/vnd.oasis.opendocument.spreadsheet': ['.ods']
         },
-        maxFiles: 1
+        maxFiles: 1,
+        onDrop: onDrop
     });
 
     const style = useMemo(() => ({
@@ -64,8 +83,7 @@ export default function Dropzone(props) {
         <div className="container">
             <div {...getRootProps({ style })}>
                 <input {...getInputProps()} />
-                <p>Arraste e solte uma planilha aqui</p>
-                <p>Ou clique para selecionar arquivo</p>
+                <p>Clique para selecionar planilha</p>
             </div>
         </div>
     );

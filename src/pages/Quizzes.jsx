@@ -13,8 +13,9 @@ import QuizCard from '../components/QuizCard';
 
 const fabStyle = {
     position: 'absolute',
-    bottom: 30,
-    right: 30
+    bottom: 50,
+    right: 50,
+    padding: 4
 };
 
 export default function Quizzes() {

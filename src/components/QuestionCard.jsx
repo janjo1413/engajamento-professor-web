@@ -13,36 +13,33 @@ export default function QuestionCard({ question, answer }) {
                         {question}
                     </Typography>
 
-                    <Container sx={{ textAlign: 'center'}}>
-                       
-                   
+                    <Container sx={{ textAlign: 'center' }}>
+                        <Button variant="text" onClick={() => setIsAnswerVisible(!isAnswerVisible)} sx={{ mt: 2 }}>
+                            {isAnswerVisible ? (
+                                <IconButton aria-label="hide answer">
+                                    <VisibilityOff />
+                                </IconButton>
+                            ) : (
+                                <IconButton aria-label="show answer">
+                                    <Visibility />
+                                </IconButton>
+                            )}
+                        </Button>
 
-                    <Button variant="text" onClick={() => setIsAnswerVisible(!isAnswerVisible)} sx={{ mt: 2 }}>
                         {isAnswerVisible ? (
-                            <IconButton aria-label="hide answer">
-                                <VisibilityOff />
-                            </IconButton>
+                            answer === 'V' ? (
+                                <Typography variant="h6" component="div" sx={{ mt: 2, textAlign: 'center' }}>
+                                    Verdadeiro
+                                </Typography>
+                            ) : (
+                                <Typography variant="h6" component="div" sx={{ mt: 2, textAlign: 'center' }}>
+                                    Falso
+                                </Typography>
+                            )
                         ) : (
-                            <IconButton aria-label="show answer">
-                                <Visibility />
-                            </IconButton>
+                            <div style={{ height: 40, backgroundColor: 'gray', borderRadius: 10, marginTop: 10, width: '10vw', margin: 'auto' }} />
                         )}
-                    </Button>
-
-                    {isAnswerVisible ? (
-                        answer === 'V' ? (
-                            <Typography variant="h6" component="div" sx={{ mt: 2, textAlign: 'center' }}>
-                                Verdadeiro
-                            </Typography>
-                        ) : (
-                            <Typography variant="h6" component="div" sx={{ mt: 2, textAlign: 'center' }}>
-                                Falso
-                            </Typography>
-                        )
-                    ) : (
-                        <div style={{ height: 40, backgroundColor: 'gray', borderRadius: 10, marginTop: 10, width: '10vw', margin: 'auto' }} />
-                    )}
-                     </Container>
+                    </Container>
                 </CardContent>
             </Card>
         </Grid>
