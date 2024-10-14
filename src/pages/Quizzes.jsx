@@ -10,6 +10,7 @@ import useClasses from '../hooks/useClasses';
 
 import { useQuizClass } from '../contexts/QuizClassContext';
 import QuizCard from '../components/QuizCard';
+import { useCallback } from 'react';
 
 const fabStyle = {
     position: 'absolute',
@@ -21,8 +22,9 @@ const fabStyle = {
 export default function Quizzes() {
     const [open, setOpen] = useState(false);
     const [error, setError] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
-    const { quizzes } = useQuizzes();
+    const { quizzes, refetch } = useQuizzes();
     const { classes } = useClasses();
     const { quiz, setQuiz, classRoom, setClassRoom, setQuizCode } = useQuizClass();
 
@@ -67,6 +69,11 @@ export default function Quizzes() {
         navigate(`/quiz?quizId=${quiz._id}&classId=${classRoom._id}`);
     }
 
+    const handleRefresh = useCallback(() => {
+        setRefreshing(true);
+        refetch().finally(() => setRefreshing(false));
+    }, [refreshing]);
+
     return (
         <Box m={2}>
             <h2>Meus Questionários</h2>
@@ -76,11 +83,14 @@ export default function Quizzes() {
                 {
                     quizzes ? (
                         quizzes.map(quiz => (
-                            <QuizCard 
-                            quiz={quiz} 
-                            onMainClick={() => handleClickOpen(quiz)}
-                            onSecondaryClick={() => openDetails(quiz)}
-                              key={quiz.codigo} />
+                            <QuizCard
+                                quiz={quiz}
+                                onMainClick={() => handleClickOpen(quiz)}
+                                onSecondaryClick={() => openDetails(quiz)}
+                                key={quiz.codigo}
+                                refreshing={refreshing}
+                                onRefresh={handleRefresh}
+                            />
                         ))) : (
                         <Grid container spacing={4} direction="row" sx={{ marginLeft: 2, marginTop: 4 }}>
                             <Grid item xs={3}>
@@ -151,7 +161,7 @@ export default function Quizzes() {
             </Dialog>
 
             <Snackbar open={error} autoHideDuration={3000} onClose={handleCloseMessage}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center'}}>
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
                 <Alert
                     onClose={handleCloseMessage}
                     severity="error"
