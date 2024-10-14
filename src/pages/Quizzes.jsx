@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Grid, Button, Fab, Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItemIcon, ListItemText, List, ListItemButton, Alert, Snackbar, Box } from '@mui/material';
+import { Grid, Button, Fab, Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItemIcon, ListItemText, List, ListItemButton, Alert, Snackbar, Box, MenuList } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import ClassIcon from '@mui/icons-material/School';
@@ -23,7 +23,7 @@ export default function Quizzes() {
 
     const { quizzes } = useQuizzes();
     const { classes } = useClasses();
-    const { quiz, setQuiz, classRoom, setClassRoom } = useQuizClass();
+    const { quiz, setQuiz, classRoom, setClassRoom, setQuizCode } = useQuizClass();
 
     const navigate = useNavigate();
 
@@ -32,6 +32,11 @@ export default function Quizzes() {
         setClassRoom('');
         setQuiz(quiz);
     };
+
+    const openDetails = (quiz) => {
+        setQuizCode(quiz.codigo);
+        navigate(`/details/${quiz._id}`);
+    }
 
     const handleClose = () => {
         setOpen(false);
@@ -70,7 +75,11 @@ export default function Quizzes() {
                 {
                     quizzes ? (
                         quizzes.map(quiz => (
-                            <QuizCard quiz={quiz} onClick={() => handleClickOpen(quiz)} key={quiz.codigo} />
+                            <QuizCard 
+                            quiz={quiz} 
+                            onMainClick={() => handleClickOpen(quiz)}
+                            onSecondaryClick={() => openDetails(quiz)}
+                              key={quiz.codigo} />
                         ))) : (
                         <Grid container spacing={4} direction="row" sx={{ marginLeft: 2, marginTop: 4 }}>
                             <Grid item xs={3}>

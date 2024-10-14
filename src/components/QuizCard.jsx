@@ -2,13 +2,13 @@ import { useMemo } from "react";
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import getRandomImage from "../utils/getRandomImage";
 
-const QuizCard = ({ quiz, onClick }) => {
+const QuizCard = ({ quiz, onMainClick, onSecondaryClick }) => {
     const randomImage = useMemo(() => getRandomImage('quiz'), []);
 
     return (
         <Grid item xs={3}>
             <Card>
-                <CardActionArea>
+                <CardActionArea onClick={onSecondaryClick}>
                     <CardMedia
                         component="img"
                         height="140"
@@ -28,8 +28,8 @@ const QuizCard = ({ quiz, onClick }) => {
                 </CardActionArea>
 
                 <CardActions>
-                    <Button size="small" color="primary" onClick={onClick}>
-                        Iniciar Quiz
+                    <Button size="small" color="primary" onClick={onMainClick}>
+                        Iniciar Questionário
                     </Button>
                 </CardActions>
             </Card>
