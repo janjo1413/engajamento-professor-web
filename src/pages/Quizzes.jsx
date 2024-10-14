@@ -1,57 +1,21 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardMedia, CardActionArea, CardActions, Typography, Grid, Button, Fab, Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItemIcon, ListItemText, List, ListItemButton, Alert, Snackbar, Box } from '@mui/material';
+import { Grid, Button, Fab, Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItemIcon, ListItemText, List, ListItemButton, Alert, Snackbar, Box } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import ClassIcon from '@mui/icons-material/School';
 
 import useQuizzes from '../hooks/useQuizzes';
-import getRandomImage from '../utils/getRandomImage';
 import useClasses from '../hooks/useClasses';
 
 import { useQuizClass } from '../contexts/QuizClassContext';
+import QuizCard from '../components/QuizCard';
 
 const fabStyle = {
     position: 'absolute',
     bottom: 30,
     right: 30
 };
-
-const QuizCard = ({ quiz, onClick }) => {
-    const randomImage = useMemo(() => getRandomImage('quiz'), []);
-
-    return (
-        <Grid item xs={3}>
-            <Card>
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        height="140"
-                        image={randomImage}
-                        alt={quiz.descricao}
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {quiz.nome}
-                        </Typography>
-
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            {quiz.descricao}
-                        </Typography>
-
-                    </CardContent>
-                </CardActionArea>
-
-                <CardActions>
-                    <Button size="small" color="primary" onClick={onClick}>
-                        Iniciar Quiz
-                    </Button>
-                </CardActions>
-            </Card>
-        </Grid>
-
-    )
-}
 
 export default function Quizzes() {
     const [open, setOpen] = useState(false);
@@ -109,6 +73,9 @@ export default function Quizzes() {
                             <QuizCard quiz={quiz} onClick={() => handleClickOpen(quiz)} key={quiz.codigo} />
                         ))) : (
                         <Grid container spacing={4} direction="row" sx={{ marginLeft: 2, marginTop: 4 }}>
+                            <Grid item xs={3}>
+                                <Skeleton variant="rectangular" width={300} height={200} />
+                            </Grid>
                             <Grid item xs={3}>
                                 <Skeleton variant="rectangular" width={300} height={200} />
                             </Grid>
