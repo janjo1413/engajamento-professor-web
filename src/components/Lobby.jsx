@@ -37,6 +37,8 @@ export default function Lobby({ onStartQuiz }) {
             await api.post('/conectaQuestionario', JSON.stringify({ valor: false }))
                 .then((response) => { console.log(response.data) })
                 .catch((error) => { console.error(error) })
+            
+            await api.get('/limparEstado').then(response => {});
         }
 
         const getQuizCode = async () => {
@@ -84,7 +86,7 @@ export default function Lobby({ onStartQuiz }) {
                 })
         }
 
-        const id = setInterval(getConnectedStudents, 2000);
+        const id = setInterval(getConnectedStudents, 3000);
         setIntervalId(id);
 
         return () => clearInterval(id);

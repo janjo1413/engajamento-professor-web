@@ -18,7 +18,7 @@ export default function Final({ onFinishResults }) {
                 } catch (error) {
                     console.error('Error making API call:', error);
                 }
-            }, 2000);
+            }, 3000);
 
             setIntervalId(id);
         }
