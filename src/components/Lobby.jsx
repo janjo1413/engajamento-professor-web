@@ -38,7 +38,7 @@ export default function Lobby({ onStartQuiz }) {
                 .then((response) => { console.log(response.data) })
                 .catch((error) => { console.error(error) })
             
-            await api.get('/limparEstado').then(response => {});
+            //await api.get('/limparEstado').then(response => {});
         }
 
         const getQuizCode = async () => {
