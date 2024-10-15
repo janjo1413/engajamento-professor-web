@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Avatar, Button, Card, CardHeader, Container, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardHeader, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import api from '../services/api';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import getFirstNames from "../utils/getFirstNames";
@@ -28,6 +28,7 @@ export default function Lobby({ onStartQuiz }) {
     const [quizLoaded, setQuizLoaded] = useState(false);
     const [connectedStudents, setConnectedStudents] = useState([]);
     const [intervalId, setIntervalId] = useState(null);
+    const [quizCode, setQuizCode] = useState(null);
 
     const { quiz, setQuiz, classRoom } = useQuizClass();
 
@@ -36,6 +37,10 @@ export default function Lobby({ onStartQuiz }) {
             await api.post('/conectaQuestionario', JSON.stringify({ valor: false }))
                 .then((response) => { console.log(response.data) })
                 .catch((error) => { console.error(error) })
+        }
+
+        const getQuizCode = async () => {
+            await api.get('/gerarCodigo').then(response => setQuizCode(response.data))
         }
 
         const loadQuiz = async () => {
@@ -58,10 +63,11 @@ export default function Lobby({ onStartQuiz }) {
                     console.error(error)
                 })
         }
-
+        
         reset();
         loadQuiz();
         loadClass();
+        getQuizCode();
     }, [])
 
     useEffect(() => {
@@ -99,6 +105,17 @@ export default function Lobby({ onStartQuiz }) {
 
     return (
         <Container sx={{ textAlign: 'center' }} >
+            {
+                !quizCode ? (
+                    <CircularProgress />
+                )
+                    : (
+                        <Typography variant="h5" sx={{ my: 6, mr: 1 }}>
+                            Código do questionário: <Typography variant="h4">{quizCode}</Typography>
+                        </Typography>
+                    )
+            }
+
             {
                 connectedStudents.length === 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'baseline' }}>
