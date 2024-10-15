@@ -56,21 +56,6 @@ export default function ShowQuestion({ onFinishQuiz }) {
         alignItems: "center",
       }}>
 
-      <AppBar position="static">
-        <div style={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <img src={logo} alt="Logo" />
-          <Typography variant="h6" noWrap component="div">
-            EngageQuiz
-          </Typography>
-        </div>
-
-        <IconButton size="large" color="error" aria-label="Cancelar Questionário" sx={{ mr: 2 }}>
-          <Close/>
-        </IconButton>
-
-      </AppBar>
-
-
       {
         timeIsOver ? (
           <Typography variant="h5">Tempo esgotado</Typography>
