@@ -4,7 +4,7 @@ import { EmojiEvents } from '@mui/icons-material';
 import getFirstNames from '../utils/getFirstNames';
 
 const Podium = ({ students }) => {
-   const podiumStudents = students.slice(0, 3);
+  const podiumStudents = students.slice(0, 3);
 
   const setMedalColor = (index) => {
     if (index === 0) {
@@ -35,12 +35,17 @@ const Podium = ({ students }) => {
           <Typography variant="h5" my={1}>{getFirstNames(item.nome)}</Typography>
 
           {
-            item.pontuacao === 0 &&
+            item.pontuacao == 0 &&
             <Typography variant="h5">Nenhum acerto</Typography>
           }
 
           {
-            item.pontuacao >= 1 &&
+            item.pontuacao == 1 &&
+            <Typography variant="h5">1 acerto</Typography>
+          }
+
+          {
+            item.pontuacao > 1 &&
             <Typography variant="h5">{item.pontuacao} acerto(s)</Typography>
 
           }
