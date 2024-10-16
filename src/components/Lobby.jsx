@@ -29,6 +29,7 @@ export default function Lobby({ onStartQuiz }) {
     const [connectedStudents, setConnectedStudents] = useState([]);
     const [intervalId, setIntervalId] = useState(null);
     const [quizCode, setQuizCode] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { quiz, setQuiz, classRoom } = useQuizClass();
 
@@ -37,7 +38,7 @@ export default function Lobby({ onStartQuiz }) {
             await api.post('/conectaQuestionario', JSON.stringify({ valor: false }))
                 .then((response) => { console.log(response.data) })
                 .catch((error) => { console.error(error) })
-            
+
             //await api.get('/limparEstado').then(response => {});
         }
 
@@ -65,7 +66,7 @@ export default function Lobby({ onStartQuiz }) {
                     console.error(error)
                 })
         }
-        
+
         reset();
         loadQuiz();
         loadClass();
@@ -105,17 +106,27 @@ export default function Lobby({ onStartQuiz }) {
             .catch((error) => { console.error(error) });
     }
 
+    useEffect(() => {
+        // Simulate loading for 3 seconds
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 2000);
+
+        // Clean up timer on component unmount
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <Container sx={{ textAlign: 'center' }} >
             {
-                !quizCode ? (
-                    <CircularProgress />
+                isLoading ? (
+                    <CircularProgress sx={{ mt: 4 }} />
+                ) : (
+                    <>
+                        <Typography variant="h4" sx={{ my: 4 }}>Código do questionário:</Typography>
+                        <Typography variant="h3">{quizCode}</Typography>
+                    </>
                 )
-                    : (
-                        <Typography variant="h5" sx={{ my: 6, mr: 1 }}>
-                            Código do questionário: <Typography variant="h4">{quizCode}</Typography>
-                        </Typography>
-                    )
             }
 
             {

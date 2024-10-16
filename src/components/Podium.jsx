@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Typography, Badge, Container } from '@mui/material';
+import { Box, Grid, Typography, Badge, Container, Divider } from '@mui/material';
 import { EmojiEvents } from '@mui/icons-material';
 import getFirstNames from '../utils/getFirstNames';
 
@@ -20,48 +20,88 @@ const Podium = ({ students }) => {
     const positionColor = setMedalColor(index);
 
     return (
-      <Grid item key={item.matricula}>
-        <Box my={4}>
+      <Grid key={item.matricula}>
+        <Box sx={{ display: "flex", flexWrap: "nowrap", gap: 3, p: 3, justifyContent: 'center' }}>
 
-          <Container>
-            <Typography variant="h6">
-              {index + 1}º Lugar
-            </Typography>
-
+          <Box sx={{ mt: 2 }}>
             <EmojiEvents sx={{ color: positionColor }} fontSize='large' />
-          </Container>
+          </Box>
 
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 1,
+              alignItems: "center",
+              flexGrow: 1,
+              maxWidth: '50%'
+            }}
+          >
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography
+              variant='h6'
+              sx={{
+                color: '#aaa'
+              }}
+              >
+                {index + 1}º Lugar
+              </Typography>
 
-          <Typography variant="h5" my={1}>{getFirstNames(item.nome)}</Typography>
+              <Typography
+                noWrap
+                variant="h5"
+              >
+                {getFirstNames(item.nome)}
+              </Typography>
+            </Box>
 
-          {
-            item.pontuacao == 0 &&
-            <Typography variant="h5">Nenhum acerto</Typography>
-          }
+            <Box>
+              {
+                item.pontuacao == 0 &&
+                <Typography variant="h5">Nenhum acerto</Typography>
+              }
 
-          {
-            item.pontuacao == 1 &&
-            <Typography variant="h5">1 acerto</Typography>
-          }
+              {
+                item.pontuacao == 1 &&
+                <Typography variant="h5">1 acerto</Typography>
+              }
 
-          {
-            item.pontuacao > 1 &&
-            <Typography variant="h5">{item.pontuacao} acertos</Typography>
+              {
+                item.pontuacao > 1 &&
+                <Typography variant="h5">{item.pontuacao} acertos</Typography>
 
-          }
+              }
 
+            </Box>
+          </Box>
         </Box>
+
+        <Divider sx={{ width: '60%', mx: 'auto'}} />
       </Grid>
     )
   };
 
   return (
-    <Box sx={{ textAlign: 'center' }} m={4}>
-      <Typography variant="h5">Pódio</Typography>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
 
-      <Grid container direction="column" my={2}>
-        {podiumStudents.map((item, index) => renderPodiumItem({ item, index }))}
-      </Grid>
+      <Box
+        alignItems="baseline"
+        p={2}
+      >
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Typography variant="h4">Pódio</Typography>
+        </Box>
+
+        <Grid  direction="column" my={1}>
+          {podiumStudents.map((item, index) => renderPodiumItem({ item, index }))}
+        </Grid>
+
+      </Box>
     </Box>
   );
 };
