@@ -46,7 +46,7 @@ const Podium = ({ students }) => {
 
           {
             item.pontuacao > 1 &&
-            <Typography variant="h5">{item.pontuacao} acerto(s)</Typography>
+            <Typography variant="h5">{item.pontuacao} acertos</Typography>
 
           }
 
