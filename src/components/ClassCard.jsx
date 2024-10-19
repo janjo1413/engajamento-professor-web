@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import getRandomImage from "../utils/getRandomImage";
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const ClassCard = ({ classroom }) => {
     const randomImage = useMemo(() => getRandomImage('class'), []);
@@ -28,11 +28,11 @@ const ClassCard = ({ classroom }) => {
                     </CardContent>
                 </CardActionArea>
 
-                <CardActions>
+                {/* <CardActions>
                     <Button size="small" color="primary" component={Link} to='/lobby'>
                         Questionário para esta turma
                     </Button>
-                </CardActions>
+                </CardActions> */}
 
             </Card>
         </Grid>

@@ -4,6 +4,7 @@ import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     Snackbar,
     Alert,
+    Box,
 } from "@mui/material";
 import { Delete } from '@mui/icons-material';
 import api from '../services/api';
@@ -38,15 +39,17 @@ const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
 
     return (
         <Grid item xs={3}>
-            <Card>
+            <Box sx={{ height: '100%' }}> 
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <CardActionArea onClick={onSecondaryClick}>
                     <CardMedia
                         component="img"
                         height="140"
                         image={randomImage}
                         alt={quiz.descricao}
+                        sx={{ objectFit: 'cover' }}
                     />
-                    <CardContent>
+                    <CardContent sx={{ flexGrow: 1, overflow: 'auto' }}>
                         <Typography gutterBottom variant="h5" component="div">
                             {quiz.nome}
                         </Typography>
@@ -101,6 +104,7 @@ const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
                     </Snackbar>
                 </CardActions>
             </Card>
+            </Box>
         </Grid>
 
     )
