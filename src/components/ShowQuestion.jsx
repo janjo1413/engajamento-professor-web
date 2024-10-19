@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import api from '../services/api';
 import { Button, CircularProgress, IconButton, Paper, Stack } from "@mui/material";
-import { RemoveRedEye, VisibilityOff, Close } from '@mui/icons-material';
+import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 import { useQuizClass } from '../contexts/QuizClassContext';
 
 export default function ShowQuestion({ onFinishQuiz }) {
@@ -80,49 +80,59 @@ export default function ShowQuestion({ onFinishQuiz }) {
       <Typography variant="h5">Questão {currentQuestionIndex + 1} de {quiz.questoes.length}</Typography>
       <Typography variant="h5">{quiz.questoes[currentQuestionIndex].enunciado}</Typography>
       <Typography variant="h5">Responda <span style={{ color: '#1E90FF' }}>Verdadeiro</span> ou <span style={{ color: '#FF4500' }}>Falso</span></Typography>
-      <Typography variant="h5">Resposta correta</Typography>
 
-      {
-        visible ?
-          <IconButton onClick={() => setVisible(!visible)} disabled={!timeIsOver}>
-            <VisibilityOff />
-          </IconButton>
+      {timeIsOver && (
+        <Stack spacing={4}
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+          <Typography variant="h5">Resposta correta</Typography>
 
-          :
+          {
+            visible ?
+              <IconButton onClick={() => setVisible(!visible)} disabled={!timeIsOver}>
+                <VisibilityOff />
+              </IconButton>
 
-          <IconButton onClick={() => setVisible(!visible)} disabled={!timeIsOver}>
-            <RemoveRedEye />
-          </IconButton>
-
-      }
-
-      {
-        visible ?
-          (
-            quiz.questoes[currentQuestionIndex].resposta === 'V' ?
-              <Typography variant='h4'>Verdadeiro</Typography>
               :
-              <Typography variant='h4'>Falso</Typography>
-          ) : (
-            <Paper elevation={4} sx={{ p: 4, mx: 'auto', width: 200 }}></Paper>
-          )
-      }
 
-      {
-        showSpinner ? (
-          <CircularProgress />
-        ) : (
-          currentQuestionIndex === quiz.questoes.length - 1 ? (
-            <Button variant="contained" onClick={finalizarQuestionario} disabled={!buttonEnabled}>
-              Finalizar questionário
-            </Button>
-          )
-            : (
-              <Button variant="contained" onClick={liberarProximaQuestao} disabled={!buttonEnabled}>
-                Próxima questão
-              </Button>
+              <IconButton onClick={() => setVisible(!visible)} disabled={!timeIsOver}>
+                <RemoveRedEye />
+              </IconButton>
+
+          }
+
+          {
+            visible ?
+              (
+                quiz.questoes[currentQuestionIndex].resposta === 'V' ?
+                  <Typography variant='h4'>Verdadeiro</Typography>
+                  :
+                  <Typography variant='h4'>Falso</Typography>
+              ) : (
+                <Paper elevation={4} sx={{ p: 4, mx: 'auto', width: 200 }}></Paper>
+              )
+          }
+
+          {
+            showSpinner ? (
+              <CircularProgress />
+            ) : (
+              currentQuestionIndex === quiz.questoes.length - 1 ? (
+                <Button variant="contained" onClick={finalizarQuestionario} disabled={!buttonEnabled} sx={{ mt: 4 }}>
+                  Finalizar questionário
+                </Button>
+              )
+                : (
+                  <Button variant="contained" onClick={liberarProximaQuestao} disabled={!buttonEnabled} sx={{ mt: 4 }}>
+                    Próxima questão
+                  </Button>
+                )
             )
-        )
+          }
+        </Stack>
+      )
       }
     </Stack>
   )
