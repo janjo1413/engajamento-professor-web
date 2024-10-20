@@ -38,7 +38,7 @@ const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
     };
 
     return (
-        <Grid item xs={3}>
+        <Grid item xs={12} md={6} lg={4} xl={3}>
             <Box sx={{ height: '100%' }}> 
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <CardActionArea onClick={onSecondaryClick}>
