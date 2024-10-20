@@ -44,9 +44,9 @@ export default function Classes() {
                 }
             </Grid>
 
-            <Fab color="secondary" aria-label="novo quiz" sx={fabStyle} LinkComponent={Link} to='/classes/new'>
+            {/* <Fab color="secondary" aria-label="novo quiz" sx={fabStyle} LinkComponent={Link} to='/classes/new'>
                 <AddIcon />
-            </Fab>
+            </Fab> */}
         </Box>
     )
 }

@@ -1,6 +1,6 @@
 // QuizDetailScreen.js
 import { useState, useEffect } from 'react';
-import { Typography, Container, Grid, CircularProgress, Card, CardContent } from '@mui/material';
+import { Typography, Container, Grid, CircularProgress } from '@mui/material';
 import api from '../services/api';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import QuestionCard from '../components/QuestionCard';
@@ -43,7 +43,7 @@ export default function QuizDetails() {
                         </Grid>
 
                         {selectedQuiz.questoes.map((item, index) => (
-                            <QuestionCard key={index} question={item.enunciado} answer={item.resposta} />
+                            <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} />
                         ))}
                     </Grid>
                 )

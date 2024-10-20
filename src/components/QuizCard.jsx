@@ -85,9 +85,9 @@ const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={handleClose}>Cancelar</Button>
+                            <Button onClick={handleClose}>Não, Cancelar</Button>
                             <Button onClick={handleDelete} color="error">
-                                Excluir
+                                Sim, Excluir
                             </Button>
                         </DialogActions>
                     </Dialog>

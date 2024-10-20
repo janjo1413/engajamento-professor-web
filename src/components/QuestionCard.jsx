@@ -2,15 +2,19 @@ import { useState } from 'react';
 import { Card, CardContent, Typography, Button, IconButton, Grid, Container } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-export default function QuestionCard({ question, answer }) {
+export default function QuestionCard({ question, subject, answer }) {
     const [isAnswerVisible, setIsAnswerVisible] = useState(false);
 
     return (
-        <Grid item xs={12}>
-            <Card sx={{ margin: 2 }}>
-                <CardContent>
+        <Grid item xs={6}>
+            <Card sx={{ margin: 2, height: '100%' }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column'}}>
                     <Typography variant="h6" component="div">
                         {question}
+                    </Typography>
+
+                    <Typography variant="h6" component="div" sx={{ my: 2 }}>
+                        Assunto: {subject}
                     </Typography>
 
                     <Container sx={{ textAlign: 'center' }}>

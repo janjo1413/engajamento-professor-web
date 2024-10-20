@@ -1,6 +1,5 @@
 import { Button, FormControl, FormLabel, Grid, OutlinedInput } from "@mui/material";
 import { Save } from '@mui/icons-material';
-import Dropzone from "../components/Dropzone";
 
 const saveClass = () => {
     console.log('SALVEI A TURMA');
@@ -19,9 +18,9 @@ export default function NewClass() {
                     </FormControl>
                 </Grid>
 
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                    <Dropzone />
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={4}>
                     <Button 
