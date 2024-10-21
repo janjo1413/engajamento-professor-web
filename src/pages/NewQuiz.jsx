@@ -1,7 +1,8 @@
-import { Alert, Box, Button, Container, FormControl, FormLabel, Grid, OutlinedInput, Snackbar, TextField } from "@mui/material";
-import { Save } from '@mui/icons-material';
 import { useState } from "react";
+import { Alert, Box, Button, Container, Grid, Snackbar, TextField } from "@mui/material";
+import { Save } from '@mui/icons-material';
 import { read, utils } from 'xlsx';
+import Swal from 'sweetalert2';
 import QuestionCard from "../components/QuestionCard";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,6 @@ export default function NewQuiz() {
     const [quizData, setQuizData] = useState(null);
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState(false);
-    const [success, setSuccess] = useState(false);
 
     const navigate = useNavigate();
     
@@ -65,7 +65,10 @@ export default function NewQuiz() {
             }
         }))
             .then(function (response) {
-                setSuccess(true);
+                Swal.fire({
+                    title: "Questionário cadastrado com sucesso!",
+                    icon: "success"
+                })
 
                 setQuizName('');
                 setQuizDescription('');
@@ -74,6 +77,12 @@ export default function NewQuiz() {
                 navigate('/');
             })
             .catch(function (error) {
+                Swal.fire({
+                    tile: "Houve um erro!",
+                    title: "Não foi possível cadastrar o questionário!",
+                    icon: "error"
+                })
+
                 console.error(error);
             });
     }
@@ -174,19 +183,7 @@ export default function NewQuiz() {
                     variant="filled"
                     sx={{ width: '100%' }}
                 >
-                    Nome, descrição e questões são obrigatórios
-                </Alert>
-            </Snackbar>
-
-            <Snackbar open={success} autoHideDuration={3000} onClose={handleCloseMessage}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert
-                    onClose={handleCloseMessage}
-                    severity="success"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Questionário cadastrado com sucesso
+                    Preencha todos os campos
                 </Alert>
             </Snackbar>
 

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar } from '@mui/material';
+import { Container, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import Swal from 'sweetalert2';
 
 import Lobby from '../components/Lobby';
 import ShowQuestion from '../components/ShowQuestion';
@@ -10,10 +11,8 @@ import api from '../services/api';
 
 export default function QuizApply() {
   const navigate = useNavigate();
-
   const [quizStage, setQuizStage] = useState('lobby'); // 'lobby', 'question', 'podium'
-  const [open, setOpen] = useState(false);
-
+  
   const startQuiz = () => {
     setQuizStage('question');
   };
@@ -26,25 +25,29 @@ export default function QuizApply() {
     setQuizStage('')
   }
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleCancel = async () => {
-    await api.get('/limparEstado').then(response => {
-      navigate('/');
-    });
-  }
-
+    Swal.fire({
+      title: "Tem certeza?",
+      text: "Cancelar questionário?",
+      icon: "warning",
+      showCancelButton: true,
+      showConfirmButton: true,
+      cancelButtonText: "Não, continuar",
+      confirmButtonText: "Sim, cancelar",
+      reverseButtons: true,
+      confirmButtonColor: '#d33',
+  }).then(async (result) => {
+    if(result.isConfirmed) {
+      await api.get('/limparEstado').then(response => {
+        navigate('/');
+      });
+    }
+  })}
+    
   return (
     <Container>
       <Container style={{ display: 'flex', justifyContent: 'flex-end', width: '90%' }}>
-        <IconButton aria-label='Cancelar questionário' color="error" size='large' onClick={handleClickOpen}>
+        <IconButton aria-label='Cancelar questionário' color="error" size='large' onClick={handleCancel}>
           <Close sx={{ fontSize: '2.5rem' }} />
         </IconButton>
       </Container>
@@ -55,29 +58,6 @@ export default function QuizApply() {
 
       {quizStage === 'final' && <Final onFinishResults={finishApply} />}
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Tem certeza?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Cancelar aplicação do questionário?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Não, continuar questionário</Button>
-          <Button onClick={handleCancel} color="error">
-            Sim, cancelar questionário
-          </Button>
-        </DialogActions>
-      </Dialog>
-
     </Container>
   );
 };
-
