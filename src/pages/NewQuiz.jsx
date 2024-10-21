@@ -41,6 +41,12 @@ export default function NewQuiz() {
         reader.readAsBinaryString(file);
     };
 
+    const clearData = () => {
+        const fileInput = document.querySelector('.fileInput');
+        fileInput.value = '';
+        setQuizData(null);
+      }
+
 
     const saveQuiz = async () => {
         if(!quizName || !quizDescription || !quizData){
@@ -129,6 +135,7 @@ export default function NewQuiz() {
                     <input
                         type="file"
                         accept=".xls, .xlsx, .ods, .csv"
+                        class="fileInput"
                         onChange={handleFileUpload} />
 
                     {quizData && (
@@ -144,6 +151,8 @@ export default function NewQuiz() {
 
                                     )
                                 }
+
+                                <Button variant="text" onClick={() => clearData()}>Apagar dados</Button>
                             </Box>
 
                             {
