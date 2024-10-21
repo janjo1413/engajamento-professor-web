@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Container, FormControl, FormLabel, Grid, OutlinedInput, Snackbar } from "@mui/material";
+import { Alert, Box, Button, Container, FormControl, FormLabel, Grid, OutlinedInput, Snackbar, TextField } from "@mui/material";
 import { Save } from '@mui/icons-material';
 import { useState } from "react";
 import { read, utils } from 'xlsx';
@@ -80,49 +80,43 @@ export default function NewQuiz() {
 
 
     return (
-        <div>
+        <Box sx={{ textAlign: 'center', mx: 'auto' }}>
             <h2>Novo questionário</h2>
 
-            <Grid container direction="column" spacing={3}>
-                <Grid item xs={4}>
-                    <FormControl>
-                        <FormLabel htmlFor="quiz">Nome do questionário</FormLabel>
-                        <OutlinedInput
+            <Grid container direction="column" spacing={4}>
+                <Grid item>              
+                        <TextField
                             id="quiz"
-                            name="quiz"
-                            type="quiz"
-                            placeholder="Nome do questionário"
-                            aria-describedby="Nome do questionário"
+                            label="Nome do questionário"
+                            variant="outlined"
                             required
-                            size="medium"
+                            fullWidth 
                             value={quizName}
                             onChange={(event) => {
                                 setQuizName(event.target.value);
                             }}
+                            sx={{ width: '50%' }}
                         />
-                    </FormControl>
+                    
                 </Grid>
 
-                <Grid item xs={4}>
-                    <FormControl>
-                        <FormLabel htmlFor="description">Descrição</FormLabel>
-                        <OutlinedInput
+                <Grid item>
+                        <TextField
                             id="description"
-                            name="description"
-                            type="description"
-                            placeholder="Descrição do questionário"
-                            aria-describedby="nome-da-turma"
+                            label="Descrição do questionário"
+                            variant="outlined"
                             required
-                            size="medium"
+                            fullWidth 
                             value={quizDescription}
                             onChange={(event) => {
                                 setQuizDescription(event.target.value);
                             }}
+                            sx={{ width: '50%' }}
                         />
-                    </FormControl>
+                   
                 </Grid>
 
-                <Grid item xs={4}>
+                <Grid item>
                     <input
                         type="file"
                         accept=".xls, .xlsx, .ods, .csv"
@@ -131,7 +125,7 @@ export default function NewQuiz() {
                     {quizData && (
                         <Container sx={{ my: 4 }}>
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '35%' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '50%', mx: 'auto' }}>
                                 <h2>Dados do questionário:</h2>
                                 {
                                     visible ? (
@@ -162,7 +156,7 @@ export default function NewQuiz() {
                     )}
                 </Grid>
 
-                <Grid item xs={4}>
+                <Grid item>
                     <Button
                         variant="contained"
                         startIcon={<Save />}
@@ -196,6 +190,6 @@ export default function NewQuiz() {
                 </Alert>
             </Snackbar>
 
-        </div>
+        </Box>
     )
 }

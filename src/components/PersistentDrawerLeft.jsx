@@ -153,7 +153,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemIcon>
                                 <QuizIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Quizzes" />
+                            <ListItemText primary="Questionários" />
                         </ListItemButton>
                     </ListItem>
 
@@ -162,7 +162,7 @@ export default function PersistentDrawerLeft() {
                             <ListItemIcon>
                                 <ClassIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Classes" />
+                            <ListItemText primary="Turmas" />
                         </ListItemButton>
                     </ListItem>
                 </List>
