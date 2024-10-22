@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Alert, Box, Button, Container, Grid, Snackbar, TextField } from "@mui/material";
-import { Save } from '@mui/icons-material';
+import { Alert, Box, Button, Container, Grid, IconButton, Snackbar, TextField } from "@mui/material";
+import { Save, Visibility, VisibilityOff, Delete } from '@mui/icons-material';
 import { read, utils } from 'xlsx';
 import Swal from 'sweetalert2';
-import QuestionCard from "../components/QuestionCard";
+import QuestionCheckCard from "../components/QuestionCheckCard";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export default function NewQuiz() {
     const [error, setError] = useState(false);
 
     const navigate = useNavigate();
-    
+
     const handleCloseMessage = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -41,15 +41,17 @@ export default function NewQuiz() {
         reader.readAsBinaryString(file);
     };
 
+    const toggleVisibility = () => setVisible(!visible);
+
     const clearData = () => {
         const fileInput = document.querySelector('.fileInput');
         fileInput.value = '';
         setQuizData(null);
-      }
+    }
 
 
     const saveQuiz = async () => {
-        if(!quizName || !quizDescription || !quizData){
+        if (!quizName || !quizDescription || !quizData) {
             setError(true);
             return;
         }
@@ -99,36 +101,36 @@ export default function NewQuiz() {
             <h2>Novo questionário</h2>
 
             <Grid container direction="column" spacing={4}>
-                <Grid item>              
-                        <TextField
-                            id="quiz"
-                            label="Nome do questionário"
-                            variant="outlined"
-                            required
-                            fullWidth 
-                            value={quizName}
-                            onChange={(event) => {
-                                setQuizName(event.target.value);
-                            }}
-                            sx={{ width: '50%' }}
-                        />
-                    
+                <Grid item>
+                    <TextField
+                        id="quiz"
+                        label="Nome do questionário"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        value={quizName}
+                        onChange={(event) => {
+                            setQuizName(event.target.value);
+                        }}
+                        sx={{ width: '50%' }}
+                    />
+
                 </Grid>
 
                 <Grid item>
-                        <TextField
-                            id="description"
-                            label="Descrição do questionário"
-                            variant="outlined"
-                            required
-                            fullWidth 
-                            value={quizDescription}
-                            onChange={(event) => {
-                                setQuizDescription(event.target.value);
-                            }}
-                            sx={{ width: '50%' }}
-                        />
-                   
+                    <TextField
+                        id="description"
+                        label="Descrição do questionário"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        value={quizDescription}
+                        onChange={(event) => {
+                            setQuizDescription(event.target.value);
+                        }}
+                        sx={{ width: '50%' }}
+                    />
+
                 </Grid>
 
                 <Grid item>
@@ -142,17 +144,22 @@ export default function NewQuiz() {
                         <Container sx={{ my: 4 }}>
 
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '50%', mx: 'auto' }}>
-                                <h2>Dados do questionário:</h2>
+                                <h2>Dados das questões:</h2>
                                 {
                                     visible ? (
-                                        <Button variant="text" onClick={() => setVisible(!visible)}>Ocultar</Button>
+                                        <IconButton size="large" color="primary" onClick={toggleVisibility}>
+                                            <VisibilityOff />
+                                        </IconButton>
                                     ) : (
-                                        <Button variant="text" onClick={() => setVisible(!visible)}>Ver</Button>
-
+                                        <IconButton size="large" color="primary" onClick={toggleVisibility}>
+                                            <Visibility />
+                                        </IconButton>
                                     )
                                 }
 
-                                <Button variant="text" onClick={() => clearData()}>Apagar dados</Button>
+                                <IconButton size="large" color="error" onClick={() => clearData()}>
+                                    <Delete />
+                                </IconButton>
                             </Box>
 
                             {
@@ -162,7 +169,7 @@ export default function NewQuiz() {
                                         <Grid container spacing={4}>
 
                                             {quizData.map((item, index) => (
-                                                <QuestionCard key={index} question={item[0]} answer={item[1]} subject={item[2]} />
+                                                <QuestionCheckCard key={index} question={item[0]} answer={item[1]} subject={item[2]} />
                                             ))}
 
                                         </Grid>
