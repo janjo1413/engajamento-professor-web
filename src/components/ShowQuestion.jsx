@@ -5,6 +5,7 @@ import api from '../services/api';
 import { Button, CircularProgress, IconButton, Paper, Stack } from "@mui/material";
 import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 import { useQuizClass } from '../contexts/QuizClassContext';
+import ProgressBar from "./ProgressBar";
 
 export default function ShowQuestion({ onFinishQuiz }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -78,7 +79,10 @@ export default function ShowQuestion({ onFinishQuiz }) {
       }
 
       <Typography variant="h5">Questão {currentQuestionIndex + 1} de {quiz.questoes.length}</Typography>
+      <ProgressBar current={currentQuestionIndex + 1} target={quiz.questoes.length}/>
+
       <Typography variant="h5">{quiz.questoes[currentQuestionIndex].enunciado}</Typography>
+
       <Typography variant="h5">Responda <span style={{ color: '#1E90FF' }}>Verdadeiro</span> ou <span style={{ color: '#FF4500' }}>Falso</span></Typography>
 
       {timeIsOver && (

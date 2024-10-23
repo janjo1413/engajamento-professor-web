@@ -27,18 +27,24 @@ export default function NewQuiz() {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
-
+    
         reader.onload = (event) => {
-            const workbook = read(event.target.result, { type: 'binary' });
+            const data = new Uint8Array(event.target.result);
+            const binaryString = String.fromCharCode.apply(null, data);
+    
+            const workbook = read(binaryString, { type: 'binary' });
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
-
+    
             const sheetData = utils.sheet_to_json(sheet, { header: 1 });
-
-            setQuizData(sheetData);
+    
+            // Considera apenas as linhas com três valores: enunciado, resposta e tema
+            const filteredSheetData = sheetData.filter(line => line.length === 3);
+    
+            setQuizData(filteredSheetData);
         };
-
-        reader.readAsBinaryString(file);
+    
+        reader.readAsArrayBuffer(file);
     };
 
     const toggleVisibility = () => setVisible(!visible);
