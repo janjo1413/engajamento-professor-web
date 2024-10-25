@@ -1,47 +1,47 @@
-import { Link } from 'react-router-dom';
-import { Grid, Fab, Skeleton, Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Grid, Skeleton, Box, Typography } from '@mui/material';
 import useClasses from '../hooks/useClasses';
 import ClassCard from '../components/ClassCard';
-
-const fabStyle = {
-    position: 'absolute',
-    bottom: 50,
-    right: 50,
-    padding: 4
-};
 
 export default function Classes() {
     const { classes } = useClasses();
 
+    if (!classes) {
+        return (
+            <Box m={2}>
+                <Typography variant="h4" sx={{ my: 4 }}>Carregando turmas...</Typography>
+
+                <Grid container spacing={4}>
+                    <Grid item xs={3}>
+                        <Skeleton variant="rectangular" width={300} height={200} />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Skeleton variant="rectangular" width={300} height={200} />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Skeleton variant="rectangular" width={300} height={200} />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Skeleton variant="rectangular" width={300} height={200} />
+                    </Grid>
+                </Grid>
+            </Box>
+        );
+    }
+
+
+
     return (
         <Box m={2}>
-            <h2>Minhas turmas</h2>
+            <Typography variant="h4" sx={{ my: 4 }}>Minhas turmas</Typography>
 
             <Grid container spacing={4}>
-                {
-                    classes ? (
-
-                        classes.map(classObject => (
-                            <ClassCard classroom={classObject} key={classObject._id} />
-                        )))
-                        : (
-                            <Grid container spacing={2} direction="row" sx={{ marginLeft: 2, marginTop: 4 }}>
-                                <Grid item xs={3}>
-                                    <Skeleton variant="rectangular" width={300} height={200} />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Skeleton variant="rectangular" width={300} height={200} />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Skeleton variant="rectangular" width={300} height={200} />
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <Skeleton variant="rectangular" width={300} height={200} />
-                                </Grid>
-                            </Grid>
-                        )
-                }
+                {classes.length > 0 ? (
+                    classes.map(classObject => (
+                        <ClassCard classroom={classObject} key={classObject._id} />
+                    ))
+                ) : (
+                    <Typography variant="h6">Nenhuma turma encontrada.</Typography>
+                )}
             </Grid>
 
             {/* <Fab color="secondary" aria-label="novo quiz" sx={fabStyle} LinkComponent={Link} to='/classes/new'>

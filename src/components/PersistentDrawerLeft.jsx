@@ -26,9 +26,10 @@ import Classes from '../pages/Classes';
 import NewQuiz from '../pages/NewQuiz';
 import NewClass from '../pages/NewClass';
 import QuizApply from '../pages/QuizApply';
+import QuizDetails from '../pages/QuizDetails';
+import ClassDetails from '../pages/ClassDetails';
 
 import logo from '../assets/logo.png';
-import QuizDetails from '../pages/QuizDetails';
 
 let drawerWidth = 240;
 
@@ -181,6 +182,7 @@ export default function PersistentDrawerLeft() {
 
                     <Route path="/quiz" element={<QuizApply />} />
                     <Route path="/details/:id" element={<QuizDetails />} />
+                    <Route path="/classes/:classCode" element={<ClassDetails />} />
                 </Routes>
 
             </Main>

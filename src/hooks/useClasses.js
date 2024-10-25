@@ -9,36 +9,15 @@ const useClasses = () => {
         const result = await api.get('/getTurmas');
         setClasses(result.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Erro ao buscar turmas:', error);
       }
     }
-
-    const fetchClassById = async (id) => {
-      try {
-          const result = await api.get(`/classes/${id}`);
-          return result.data;
-      } catch (error) {
-          console.error('Error fetching class:', error);
-          return null;
-      }
-    };
-
-    const createNewClass = async (newClass) => {
-      try {
-          const result = await api.post('/classes', newClass);
-          setClasses((prevClasses) => [...prevClasses, result.data]);
-          return result.data;
-      } catch (error) {
-          console.error('Error adding class:', error);
-          return null;
-      }
-  };
 
     useEffect(() => {
         fetchData();
     }, []);
 
-    return { classes, refetch: fetchData, fetchClassById, createNewClass };
+    return { classes, refetch: fetchData };
 }
 
 export default useClasses;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Grid, Button, Fab, Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItemIcon, ListItemText, List, ListItemButton, Alert, Snackbar, Box, MenuList } from '@mui/material';
+import { Grid, Button, Fab, Skeleton, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, ListItemIcon, ListItemText, List, ListItemButton, Alert, Snackbar, Box, MenuList, Typography } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
 import ClassIcon from '@mui/icons-material/School';
@@ -76,7 +76,7 @@ export default function Quizzes() {
 
     return (
         <Box m={2}>
-            <h2>Meus Questionários</h2>
+            <Typography variant="h4" sx={{ my: 4 }}>Meus questionários</Typography>
 
             <Grid container spacing={4}>
 

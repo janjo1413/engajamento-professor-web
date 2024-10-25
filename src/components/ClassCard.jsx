@@ -1,15 +1,15 @@
 import { useMemo } from "react";
 import getRandomImage from "../utils/getRandomImage";
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography } from "@mui/material";
-// import { Link } from "react-router-dom";
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const ClassCard = ({ classroom }) => {
     const randomImage = useMemo(() => getRandomImage('class'), []);
 
     return (
-        <Grid item xs={3} >
+        <Grid item xs={12} sm={6} md={4}>
             <Card>
-                <CardActionArea>
+                <CardActionArea component={Link} to={`/classes/${classroom.codigo}`}>
                     <CardMedia
                         component="img"
                         height="140"
