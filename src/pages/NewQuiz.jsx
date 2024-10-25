@@ -153,19 +153,23 @@ export default function NewQuiz() {
                                 <h2>Dados das questões:</h2>
                                 {
                                     visible ? (
-                                        <IconButton size="large" color="primary" onClick={toggleVisibility}>
-                                            <VisibilityOff />
-                                        </IconButton>
+                                        // <IconButton size="large" color="primary" onClick={toggleVisibility}>
+                                        //     <VisibilityOff />
+                                        // </IconButton>
+                                        <Button variant="text" onClick={toggleVisibility}>Ocultar</Button>
                                     ) : (
-                                        <IconButton size="large" color="primary" onClick={toggleVisibility}>
-                                            <Visibility />
-                                        </IconButton>
+                                        // <IconButton size="large" color="primary" onClick={toggleVisibility}>
+                                        //     <Visibility />
+                                        // </IconButton>
+                                        <Button variant="text" onClick={toggleVisibility}>Conferir</Button>
                                     )
                                 }
 
-                                <IconButton size="large" color="error" onClick={() => clearData()}>
+                                {/* <IconButton size="large" color="error" onClick={() => clearData()}>
                                     <Delete />
-                                </IconButton>
+                                </IconButton> */}
+                                
+                                <Button variant="text" onClick={() => clearData()}>Apagar</Button>
                             </Box>
 
                             {
