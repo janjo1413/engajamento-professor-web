@@ -1,11 +1,13 @@
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 
 export default function ProgressBar(props) {
-    const value = (props.current / props.target) * 100;
+    const buffer = (props.current / props.target) * 100;
+    const currentValue = ((props.current - 1) / props.target) * 100;
+
     return (
       <Box sx={{ width: '100%'}}>
         <Box>
-          <LinearProgress variant="determinate" value={value}/>
+          <LinearProgress variant="buffer" value={currentValue} valueBuffer={buffer}/>
         </Box>
       </Box>
     );

@@ -28,8 +28,6 @@ export default function Classes() {
         );
     }
 
-
-
     return (
         <Box m={2}>
             <Typography variant="h4" sx={{ my: 4 }}>Minhas turmas</Typography>

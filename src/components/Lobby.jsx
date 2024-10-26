@@ -4,24 +4,25 @@ import api from '../services/api';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import getFirstNames from "../utils/getFirstNames";
 import '../css/animation.css';
+import StudentCard from "./StudentCard";
 
-const StudentCard = ({ student }) => {
-    return (
-        <Grid item xs={3}>
-            <Card key={student.matricula}>
-                <CardHeader
-                    avatar={
-                        <Avatar aria-label="student">
-                            {student.nome[0]}
-                        </Avatar>
-                    }
-                    title={getFirstNames(student.nome)}
-                    subheader={student.matricula}
-                />
-            </Card>
-        </Grid>
-    )
-}
+// const StudentCard = ({ student }) => {
+//     return (
+//         <Grid item xs={3}>
+//             <Card key={student.matricula}>
+//                 <CardHeader
+//                     avatar={
+//                         <Avatar aria-label="student">
+//                             {student.nome[0]}
+//                         </Avatar>
+//                     }
+//                     title={getFirstNames(student.nome)}
+//                     subheader={student.matricula}
+//                 />
+//             </Card>
+//         </Grid>
+//     )
+// }
 
 export default function Lobby({ onStartQuiz }) {
     const [classLoaded, setClassLoaded] = useState(false);
@@ -150,7 +151,7 @@ export default function Lobby({ onStartQuiz }) {
                         </Grid>
 
                         <Button
-                            sx={{ margin: '1rem auto', width: '50%' }}
+                            sx={{ my: 4, mx: 'auto', width: '50%' }}
                             variant="contained"
                             onClick={liberarQuestionario}>
                             Iniciar questionário

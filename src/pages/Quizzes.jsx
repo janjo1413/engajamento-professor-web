@@ -38,7 +38,7 @@ export default function Quizzes() {
 
     const openDetails = (quiz) => {
         setQuizCode(quiz.codigo);
-        navigate(`/details/${quiz._id}`);
+        navigate(`/quizzes/${quiz._id}`);
     }
 
     const handleClose = () => {
@@ -76,7 +76,13 @@ export default function Quizzes() {
 
     return (
         <Box m={2}>
-            <Typography variant="h4" sx={{ my: 4 }}>Meus questionários</Typography>
+            {
+                !quizzes ? (
+                    <Typography variant="h4" sx={{ my: 4 }}>Carregando questionários...</Typography>
+                ) : (
+                    <Typography variant="h4" sx={{ my: 4 }}>Meus questionários</Typography>
+                )
+            }
 
             <Grid container spacing={4}>
 

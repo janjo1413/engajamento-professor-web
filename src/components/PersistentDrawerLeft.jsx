@@ -181,7 +181,7 @@ export default function PersistentDrawerLeft() {
                     <Route path="/classes/new" element={<NewClass />} />
 
                     <Route path="/quiz" element={<QuizApply />} />
-                    <Route path="/details/:id" element={<QuizDetails />} />
+                    <Route path="/quizzes/:quizCode" element={<QuizDetails />} />
                     <Route path="/classes/:classCode" element={<ClassDetails />} />
                 </Routes>
 

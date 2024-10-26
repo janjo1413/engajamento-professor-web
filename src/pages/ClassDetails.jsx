@@ -3,6 +3,8 @@ import { Box, CircularProgress, Typography, Grid, Card, CardContent } from '@mui
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
 
+import StudentCard from '../components/StudentCard';
+
 export default function ClassDetails() {
   const { classCode } = useParams(); 
   const [selectedClass, setSelectedClass] = useState(null);
@@ -45,14 +47,7 @@ export default function ClassDetails() {
       <Typography variant="h6">Número de Alunos: {selectedClass.length}</Typography>
       <Grid container spacing={2} mt={2}>
         {selectedClass.map((student) => (
-          <Grid item xs={12} sm={6} md={4} key={student._id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Matrícula: {student.Matricula}</Typography>
-                <Typography variant="body1">Nome: {student.Nome}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+            <StudentCard student={student} />
         ))}
       </Grid>
     </Box>
