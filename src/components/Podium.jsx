@@ -21,7 +21,7 @@ const Podium = ({ students }) => {
 
     return (
       <Grid key={item.matricula}>
-        <Box sx={{ display: "flex", gap: 5, p: 3 }}>
+        <Box sx={{ display: "flex", gap: 10, p: 3 }}>
 
           <Box sx={{ mt: 2 }}>
             <EmojiEvents sx={{ color: positionColor }} fontSize='large' />
@@ -30,7 +30,7 @@ const Podium = ({ students }) => {
           <Box
             sx={{
               display: "flex",
-              gap: 10,
+              gap: 15,
               alignItems: "flex-end"
             }}
           >
