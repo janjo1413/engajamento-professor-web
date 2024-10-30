@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Alert, Box, Button, Container, Grid, IconButton, Snackbar, TextField } from "@mui/material";
-import { Save, Visibility, VisibilityOff, Delete } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
 import { read, utils } from 'xlsx';
 import Swal from 'sweetalert2';
+import { Alert, Box, Button, Container, Grid, Snackbar, TextField, Typography } from "@mui/material";
+import { Save, Upload } from '@mui/icons-material';
 import QuestionCheckCard from "../components/QuestionCheckCard";
 import api from "../services/api";
-import { useNavigate } from "react-router-dom";
 
 export default function NewQuiz() {
     const [quizName, setQuizName] = useState('');
@@ -15,6 +15,30 @@ export default function NewQuiz() {
     const [error, setError] = useState(false);
 
     const navigate = useNavigate();
+
+    const fileInputStyles = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 2,
+        width: '50%',
+        margin: '0 auto',
+        '& .hidden-input': {
+            display: 'none'
+        },
+        '& .drop-zone': {
+            border: '2px dashed #90caf9',
+            borderRadius: '8px',
+            padding: '20px',
+            textAlign: 'center',
+            cursor: 'pointer',
+            transition: 'border 0.3s, background-color 0.3s',
+            width: '100%',
+            '&:hover': {
+                backgroundColor: '#000'
+            }
+        }
+    };
 
     const handleCloseMessage = (event, reason) => {
         if (reason === 'clickaway') {
@@ -27,31 +51,35 @@ export default function NewQuiz() {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
-    
+
         reader.onload = (event) => {
             const data = new Uint8Array(event.target.result);
             const binaryString = String.fromCharCode.apply(null, data);
-    
+
             const workbook = read(binaryString, { type: 'binary' });
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
-    
+
             const sheetData = utils.sheet_to_json(sheet, { header: 1 });
-    
+
             // Considera apenas as linhas com três valores: enunciado, resposta e tema
             const filteredSheetData = sheetData.filter(line => line.length === 3);
-    
+
             setQuizData(filteredSheetData);
         };
-    
+
         reader.readAsArrayBuffer(file);
     };
 
     const toggleVisibility = () => setVisible(!visible);
 
     const clearData = () => {
-        const fileInput = document.querySelector('.fileInput');
-        fileInput.value = '';
+        const fileInput = document.querySelector('#file-input');
+        
+        if (fileInput) {
+            fileInput.value = '';
+        }
+
         setQuizData(null);
     }
 
@@ -140,11 +168,35 @@ export default function NewQuiz() {
                 </Grid>
 
                 <Grid item>
-                    <input
-                        type="file"
-                        accept=".xls, .xlsx, .ods, .csv"
-                        class="fileInput"
-                        onChange={handleFileUpload} />
+                    <Box sx={fileInputStyles}>
+                        <input
+                            type="file"
+                            accept=".xls, .xlsx, .ods, .csv"
+                            className="hidden-input"
+                            id="file-input"
+                            onChange={handleFileUpload}
+                        />
+                        <label htmlFor="file-input" className="drop-zone">
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                                <Button
+                                    variant="contained"
+                                    component="span"
+                                    startIcon={<Upload />}
+                                    sx={{ mb: 1 }}
+                                >
+                                    Ler planilha de questões
+                                </Button>
+                                <Typography variant="body1" color="textSecondary">
+                                    {quizData
+                                        ? 'Arquivo carregado com sucesso!'
+                                        : 'Clique para selecionar'}
+                                </Typography>
+                                <Typography variant="caption" color="textSecondary">
+                                    Formatos aceitos: .xls, .xlsx, .ods, .csv
+                                </Typography>
+                            </Box>
+                        </label>
+                    </Box>
 
                     {quizData && (
                         <Container sx={{ my: 4 }}>
@@ -168,7 +220,7 @@ export default function NewQuiz() {
                                 {/* <IconButton size="large" color="error" onClick={() => clearData()}>
                                     <Delete />
                                 </IconButton> */}
-                                
+
                                 <Button variant="text" onClick={() => clearData()}>Apagar</Button>
                             </Box>
 
