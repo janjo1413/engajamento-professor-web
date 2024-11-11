@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { read, utils } from 'xlsx';
-import Swal from 'sweetalert2';
+import DarkSwal from '../components/DarkSwal';
 import { Alert, Box, Button, Container, Grid, Snackbar, TextField, Typography } from "@mui/material";
 import { Save, Upload } from '@mui/icons-material';
 import QuestionCheckCard from "../components/QuestionCheckCard";
@@ -107,7 +107,7 @@ export default function NewQuiz() {
             }
         }))
             .then(function (response) {
-                Swal.fire({
+                DarkSwal.fire({
                     title: "Questionário cadastrado com sucesso!",
                     icon: "success"
                 })
@@ -119,7 +119,7 @@ export default function NewQuiz() {
                 navigate('/');
             })
             .catch(function (error) {
-                Swal.fire({
+                DarkSwal.fire({
                     tile: "Houve um erro!",
                     title: "Não foi possível cadastrar o questionário!",
                     icon: "error"

@@ -6,13 +6,12 @@ import {
 import { Delete } from '@mui/icons-material';
 import api from '../services/api';
 import getRandomImage from "../utils/getRandomImage";
-import Swal from "sweetalert2";
-
+import DarkSwal from '../components/DarkSwal';
 const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
     const randomImage = useMemo(() => getRandomImage('quiz'), []);
 
     const handleDelete = async () => {
-        Swal.fire({
+        DarkSwal.fire({
             title: "Tem certeza?",
             text: "Excluir questionário?",
             icon: "warning",
@@ -28,7 +27,7 @@ const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
                     codigoQuestionario: quiz.codigo
                 }))
                     .then(response => {
-                        Swal.fire({
+                        DarkSwal.fire({
                             title: "Questionário excluído com sucesso!",
                             icon: "success"   
                         })
@@ -36,7 +35,7 @@ const QuizCard = ({ quiz, onMainClick, onSecondaryClick, onRefresh }) => {
                         onRefresh();
                     })
                     .catch(error => {
-                        Swal.fire({
+                        DarkSwal.fire({
                             tile: "Houve um erro!",
                             title: "Não foi possível excluir questionário!",
                             icon: "error" 

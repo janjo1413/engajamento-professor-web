@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
-import Swal from 'sweetalert2';
 
+import DarkSwal from '../components/DarkSwal';
 import Lobby from '../components/Lobby';
 import ShowQuestion from '../components/ShowQuestion';
 import Final from '../components/Final';
@@ -26,7 +26,7 @@ export default function QuizApply() {
   }
 
   const handleCancel = async () => {
-    Swal.fire({
+    DarkSwal.fire({
       title: "Tem certeza?",
       text: "Cancelar questionário?",
       icon: "warning",
