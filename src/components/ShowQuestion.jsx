@@ -68,8 +68,8 @@ export default function ShowQuestion({ onFinishQuiz }) {
               duration={15}
               size={120}
               strokeWidth={6}
-              colors={['#ededed', '#663399', '#8c1d18']}
-              colorsTime={[15, 8, 0]}
+              colors={['#663399', '#93000a']}
+              colorsTime={[15, 0]}
               onComplete={() => setTimeIsOver(true)}
             >
               {renderTime}
