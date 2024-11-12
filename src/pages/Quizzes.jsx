@@ -13,7 +13,7 @@ import QuizCard from '../components/QuizCard';
 import { useCallback } from 'react';
 
 const fabStyle = {
-    position: 'absolute',
+    position: 'fixed',
     bottom: 50,
     right: 50,
     padding: 4
