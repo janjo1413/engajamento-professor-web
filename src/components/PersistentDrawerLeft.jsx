@@ -28,6 +28,7 @@ import NewClass from '../pages/NewClass';
 import QuizApply from '../pages/QuizApply';
 import QuizDetails from '../pages/QuizDetails';
 import ClassDetails from '../pages/ClassDetails';
+import QuizEdit from '../pages/QuizEdit';
 
 import logo from '../assets/logo.png';
 
@@ -183,6 +184,8 @@ export default function PersistentDrawerLeft() {
                     <Route path="/quiz" element={<QuizApply />} />
                     <Route path="/quizzes/:quizCode" element={<QuizDetails />} />
                     <Route path="/classes/:classCode" element={<ClassDetails />} />
+                    <Route path="/quizzes/:quizCode/edit" element={<QuizEdit />} />
+
                 </Routes>
 
             </Main>
