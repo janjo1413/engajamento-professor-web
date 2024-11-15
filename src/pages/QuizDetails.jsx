@@ -1,9 +1,18 @@
 // QuizDetailScreen.js
 import { useState, useEffect } from 'react';
-import { Typography, Container, Grid, CircularProgress, Box } from '@mui/material';
+import { Typography, Container, Grid, CircularProgress, Box, Fab } from '@mui/material';
+import { utils, writeFile } from 'xlsx';
 import api from '../services/api';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import QuestionCard from '../components/QuestionCard';
+import { InsertDriveFile } from '@mui/icons-material';
+
+const fabStyle = {
+    position: 'fixed',
+    bottom: 50,
+    right: 50,
+    padding: 4
+};
 
 export default function QuizDetails() {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
@@ -20,6 +29,25 @@ export default function QuizDetails() {
 
         getQuiz();
     }, []);
+
+    const exportToExcel = (data, filename = 'data.xlsx') => {
+        const rows = data.map((item) => Object.values(item));
+        const worksheet = utils.aoa_to_sheet(rows);
+        const workbook = utils.book_new();
+        utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+        writeFile(workbook, filename);
+    };
+
+    //usar moment pra nomear arquivo
+    const exportQuizData = (questions) => {
+        const data = questions.map(({ enunciado, resposta, tema }) => ({
+            enunciado,
+            resposta,
+            tema
+        }));
+
+        exportToExcel(data, 'MyData.xlsx');
+    };
 
     return (
         <Container maxWidth="lg" sx={{ mt: 2 }}>
@@ -47,6 +75,11 @@ export default function QuizDetails() {
                                 <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} />
                             ))}
                         </Grid>
+
+                        <Fab variant="extended" color="success" aria-label="Exportar como excel" sx={fabStyle} onClick={() => exportQuizData(selectedQuiz.questoes)}>
+                            <InsertDriveFile sx={{ mr: 1 }} />
+                            Exportar questões
+                        </Fab>
                     </Grid>
                 )
             }
