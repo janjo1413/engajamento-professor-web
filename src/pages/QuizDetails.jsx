@@ -30,7 +30,21 @@ export default function QuizDetails() {
         getQuiz();
     }, []);
 
-    const exportToExcel = (data, filename = 'data.xlsx') => {
+    const getFileName = () => {
+        const now = new Date();
+
+        const formattedDate = now.toLocaleDateString().replace(/\//g, '-');
+        const formattedTime = now.toLocaleTimeString().replace(/:/g, '-');
+
+        const timestamp = `${formattedDate}_${formattedTime}`;
+
+        const fileName = `questoes_${timestamp}.xlsx`;
+
+        return fileName;
+    }
+
+    const exportToExcel = (data) => {
+        const filename = getFileName();
         const rows = data.map((item) => Object.values(item));
         const worksheet = utils.aoa_to_sheet(rows);
         const workbook = utils.book_new();
@@ -46,7 +60,7 @@ export default function QuizDetails() {
             tema
         }));
 
-        exportToExcel(data, 'MyData.xlsx');
+        exportToExcel(data);
     };
 
     return (
