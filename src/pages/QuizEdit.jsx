@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, Container, Fab, Grid, TextField, Typography } from "@mui/material";
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
@@ -7,6 +8,7 @@ import { ArrowBack, Save } from "@mui/icons-material";
 
 export default function QuizEdit() {
     const { quizCode } = useQuizClass();
+    const navigate = useNavigate();
 
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
@@ -84,7 +86,8 @@ export default function QuizEdit() {
                             ))}
                         </Grid>
 
-                        <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle} >
+                        <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle}
+                        onClick={() => navigate(-1)}>
                             <ArrowBack sx={{ mr: 1 }} />
                             Voltar
                         </Fab>
