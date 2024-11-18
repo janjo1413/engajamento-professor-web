@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Fab, Grid, TextField, Typography } from "@mui/material";
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
 import QuestionCard from "../components/QuestionCard";
+import { ArrowBack, Save } from "@mui/icons-material";
 
 export default function QuizEdit() {
     const { quizCode } = useQuizClass();
@@ -10,6 +11,20 @@ export default function QuizEdit() {
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
     const [questions, setQuestions] = useState(null);
+
+    const fabBackStyle = {
+        position: 'fixed',
+        bottom: 50,
+        right: 325,
+        padding: 3
+    };
+
+    const fabSaveStyle = {
+        position: 'fixed',
+        bottom: 50,
+        right: 175,
+        padding: 3
+    };
 
     useEffect(() => {
         async function getQuiz() {
@@ -56,10 +71,28 @@ export default function QuizEdit() {
                         </Grid>
 
                         <Grid item xs={12} sx={{ mb: 10 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
+                                <Typography variant="h5" component="div" sx={{ my: 3 }}>
+                                    Questões:
+                                </Typography>
+
+                                <Button variant="text">Adicionar</Button>
+                            </Box>
+
                             {questions.map((item, index) => (
                                 <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} hasDelete={true} />
                             ))}
                         </Grid>
+
+                        <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle} >
+                            <ArrowBack sx={{ mr: 1 }} />
+                            Voltar
+                        </Fab>
+
+                        <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle} >
+                            <Save sx={{ mr: 1 }} />
+                            Salvar
+                        </Fab>
                     </Grid>
                 )
             }
