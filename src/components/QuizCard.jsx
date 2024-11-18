@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import {
     Button, Card, CardActionArea, CardActions, CardContent,
     CardMedia, Grid, IconButton, Typography, Box

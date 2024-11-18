@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, TextField, Typography } from "@mui/material";
+import DarkSwal from '../components/DarkSwal';
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
 import QuestionCard from "../components/QuestionCard";
@@ -11,6 +12,7 @@ export default function QuizEdit() {
     const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
+    const [error, setError] = useState(false);
 
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
@@ -44,7 +46,21 @@ export default function QuizEdit() {
                     setDescription(selectedQuiz.descricao)
                     setQuestions(selectedQuiz.questoes)
                 })
-                .catch(error => console.error(error))
+                .catch(error => {
+                    console.error(error)
+                    setError(true)
+
+                    return DarkSwal.fire({
+                        title: "Houve um erro",
+                        text: "Não foi possível obter os dados do questionário",
+                        icon: "error",
+                        confirmButtonText: "Voltar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate(-1); // Navigate back to the previous screen
+                        }
+                    });
+                })
         }
 
         getQuiz();
@@ -61,56 +77,60 @@ export default function QuizEdit() {
     return (
         <Container maxWidth="lg" sx={{ mt: 2 }}>
             {
-                !(quizName || description || questions) ? (
+                (!(quizName || description || questions) && !error) ? (
                     <CircularProgress />
                 ) : (
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Typography variant="h4" component="div" sx={{ mb: 2 }}>
-                                {quizName}
-                            </Typography>
-                        </Grid>
-
-                        <Grid item xs={12}>
-                            <TextField
-                                id="description"
-                                label="Descrição do questionário"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                value={description}
-                                onChange={(event) => {
-                                    setDescription(event.target.value);
-                                }}
-                                sx={{ width: '50%' }}
-                            />
-                        </Grid>
-
-                        <Grid item xs={12} sx={{ mb: 10 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
-                                <Typography variant="h5" component="div" sx={{ my: 3 }}>
-                                    Questões:
+                    error ? (
+                        <> </>
+                    ) : (
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant="h4" component="div" sx={{ mb: 2 }}>
+                                    {quizName}
                                 </Typography>
+                            </Grid>
 
-                                <Button variant="text" onClick={() => openAddQuestionsModal()}>Adicionar</Button>
-                            </Box>
+                            <Grid item xs={12}>
+                                <TextField
+                                    id="description"
+                                    label="Descrição do questionário"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    value={description}
+                                    onChange={(event) => {
+                                        setDescription(event.target.value);
+                                    }}
+                                    sx={{ width: '50%' }}
+                                />
+                            </Grid>
 
-                            {questions.map((item, index) => (
-                                <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} hasDelete={true} />
-                            ))}
+                            <Grid item xs={12} sx={{ mb: 10 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '25%' }}>
+                                    <Typography variant="h5" component="div" sx={{ my: 3 }}>
+                                        Questões:
+                                    </Typography>
+
+                                    <Button variant="text" onClick={() => openAddQuestionsModal()}>Adicionar</Button>
+                                </Box>
+
+                                {questions.map((item, index) => (
+                                    <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} hasDelete={true} />
+                                ))}
+                            </Grid>
+
+                            <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle}
+                                onClick={() => navigate(-1)}>
+                                <ArrowBack sx={{ mr: 1 }} />
+                                Voltar
+                            </Fab>
+
+                            <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle} >
+                                <Save sx={{ mr: 1 }} />
+                                Salvar
+                            </Fab>
                         </Grid>
-
-                        <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle}
-                            onClick={() => navigate(-1)}>
-                            <ArrowBack sx={{ mr: 1 }} />
-                            Voltar
-                        </Fab>
-
-                        <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle} >
-                            <Save sx={{ mr: 1 }} />
-                            Salvar
-                        </Fab>
-                    </Grid>
+                    )
                 )
             }
 
@@ -121,7 +141,7 @@ export default function QuizEdit() {
                     component: 'form',
                     onSubmit: (event) => {
                         event.preventDefault();
-                       // beginQuiz();
+                        // beginQuiz();
                     },
                 }}
             >
