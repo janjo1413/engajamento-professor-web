@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, CircularProgress, Container, Fab, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, TextField, Typography } from "@mui/material";
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
 import QuestionCard from "../components/QuestionCard";
@@ -9,6 +9,8 @@ import { ArrowBack, Save } from "@mui/icons-material";
 export default function QuizEdit() {
     const { quizCode } = useQuizClass();
     const navigate = useNavigate();
+
+    const [open, setOpen] = useState(false);
 
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
@@ -28,6 +30,10 @@ export default function QuizEdit() {
         padding: 3
     };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     useEffect(() => {
         async function getQuiz() {
             await api.post('/carregaQuestionario', JSON.stringify({ codigoQuestionario: quizCode }))
@@ -43,6 +49,14 @@ export default function QuizEdit() {
 
         getQuiz();
     }, []);
+
+    const openAddQuestionsModal = async () => {
+        setOpen(true);
+
+        await api.get('/getQuestoes').then(response => {
+            console.log(response.data)
+        })
+    }
 
     return (
         <Container maxWidth="lg" sx={{ mt: 2 }}>
@@ -78,7 +92,7 @@ export default function QuizEdit() {
                                     Questões:
                                 </Typography>
 
-                                <Button variant="text">Adicionar</Button>
+                                <Button variant="text" onClick={() => openAddQuestionsModal()}>Adicionar</Button>
                             </Box>
 
                             {questions.map((item, index) => (
@@ -87,7 +101,7 @@ export default function QuizEdit() {
                         </Grid>
 
                         <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle}
-                        onClick={() => navigate(-1)}>
+                            onClick={() => navigate(-1)}>
                             <ArrowBack sx={{ mr: 1 }} />
                             Voltar
                         </Fab>
@@ -99,6 +113,51 @@ export default function QuizEdit() {
                     </Grid>
                 )
             }
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                    component: 'form',
+                    onSubmit: (event) => {
+                        event.preventDefault();
+                       // beginQuiz();
+                    },
+                }}
+            >
+                <DialogTitle>Adicionar questões</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Selecione as questões que deseja adicionar
+                    </DialogContentText>
+
+                    {/* <List>
+                        {
+                            classes?.map((classItem) => (
+                                <ListItemButton
+                                    selected={classRoom.codigo === classItem.codigo}
+                                    onClick={(event) => handleListItemClick(event, classItem)}
+                                    key={classItem._id}
+                                >
+                                    <ListItemIcon>
+                                        <ClassIcon />
+                                    </ListItemIcon>
+
+                                    <ListItemText primary={classItem.nome} />
+
+                                </ListItemButton>
+
+                            ))
+                        }
+
+                    </List> */}
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancelar</Button>
+                    <Button type="submit">Adicionar questões</Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     )
 }
