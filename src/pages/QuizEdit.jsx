@@ -5,7 +5,6 @@ import { useQuizClass } from "../contexts/QuizClassContext";
 import QuestionCard from "../components/QuestionCard";
 
 export default function QuizEdit() {
-    //const [selectedQuiz, setSelectedQuiz] = useState(null);
     const { quizCode } = useQuizClass();
 
     const [quizName, setQuizName] = useState(null);
@@ -58,7 +57,7 @@ export default function QuizEdit() {
 
                         <Grid item xs={12} sx={{ mb: 10 }}>
                             {questions.map((item, index) => (
-                                <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} />
+                                <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} hasDelete={true} />
                             ))}
                         </Grid>
                     </Grid>
