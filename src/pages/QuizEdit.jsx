@@ -6,6 +6,7 @@ import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
 import QuestionCard from "../components/QuestionCard";
 import { ArrowBack, Save } from "@mui/icons-material";
+import QuestionCardWithCheckbox from "../components/QuestionCardWithCheckbox";
 
 export default function QuizEdit() {
     const { quizCode } = useQuizClass();
@@ -17,6 +18,8 @@ export default function QuizEdit() {
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
     const [questions, setQuestions] = useState(null);
+
+    const [questionsNotAdded, setQuestionsNotAdded] = useState([]);
 
     const fabBackStyle = {
         position: 'fixed',
@@ -71,6 +74,8 @@ export default function QuizEdit() {
 
         await api.get('/getQuestoes').then(response => {
             console.log(response.data)
+
+            setQuestionsNotAdded(response.data);
         })
     }
 
@@ -147,30 +152,14 @@ export default function QuizEdit() {
             >
                 <DialogTitle>Adicionar questões</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText sx={{ mb: 2 }}>
                         Selecione as questões que deseja adicionar
                     </DialogContentText>
 
-                    {/* <List>
-                        {
-                            classes?.map((classItem) => (
-                                <ListItemButton
-                                    selected={classRoom.codigo === classItem.codigo}
-                                    onClick={(event) => handleListItemClick(event, classItem)}
-                                    key={classItem._id}
-                                >
-                                    <ListItemIcon>
-                                        <ClassIcon />
-                                    </ListItemIcon>
-
-                                    <ListItemText primary={classItem.nome} />
-
-                                </ListItemButton>
-
-                            ))
-                        }
-
-                    </List> */}
+                    {
+                        questionsNotAdded.map((item, index) => (
+                            <QuestionCardWithCheckbox key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} />
+                        ))}
 
                 </DialogContent>
                 <DialogActions>
