@@ -37,6 +37,7 @@ export default function QuizEdit() {
 
     const handleClose = () => {
         setOpen(false);
+        setQuestionsNotAdded([]);
     };
 
     useEffect(() => {
@@ -73,9 +74,13 @@ export default function QuizEdit() {
         setOpen(true);
 
         await api.get('/getQuestoes').then(response => {
-            console.log(response.data)
+            const allQuestions = response.data;
 
-            setQuestionsNotAdded(response.data);
+            const questionsNotIncluded = allQuestions.filter(item1 =>
+                !questions.some(item2 => item1._id === item2._id)
+            )
+
+            setQuestionsNotAdded(questionsNotIncluded);
         })
     }
 
@@ -141,7 +146,7 @@ export default function QuizEdit() {
 
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={handleClose} 
                 PaperProps={{
                     component: 'form',
                     onSubmit: (event) => {
@@ -156,10 +161,18 @@ export default function QuizEdit() {
                         Selecione as questões que deseja adicionar
                     </DialogContentText>
 
-                    {
+                    {questionsNotAdded.length === 0 ? (
+                        <CircularProgress />
+                    ) : (
                         questionsNotAdded.map((item, index) => (
-                            <QuestionCardWithCheckbox key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} />
-                        ))}
+                            <QuestionCardWithCheckbox
+                                key={index}
+                                question={item.enunciado}
+                                subject={item.tema}
+                                answer={item.resposta}
+                            />
+                        ))
+                    )}
 
                 </DialogContent>
                 <DialogActions>
