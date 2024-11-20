@@ -20,7 +20,8 @@ export default function QuizEdit() {
     const [questions, setQuestions] = useState(null);
 
     const [questionsNotAdded, setQuestionsNotAdded] = useState([]);
-    
+    const [questionsToAdd, setQuestionsToAdd] = useState([]);
+
     const fabBackStyle = {
         position: 'fixed',
         bottom: 50,
@@ -43,6 +44,15 @@ export default function QuizEdit() {
     const removeQuestion = (questionId) => {
         setQuestions((prevQuestions) => prevQuestions.filter(q => q._id !== questionId));
     };
+
+    const handleCheck = (question) => {
+        setQuestionsToAdd((prev) => [...prev, question]);
+    };
+
+    const handleUncheck = (questionId) => {
+        setQuestionsToAdd((prev) => prev.filter((q) => q._id !== questionId));
+    };
+
 
     useEffect(() => {
         async function getQuiz() {
@@ -129,14 +139,14 @@ export default function QuizEdit() {
                                 </Box>
 
                                 {questions.map((item, index) => (
-                                    <QuestionCard 
-                                    key={index} 
-                                    question={item.enunciado} 
-                                    subject={item.tema} 
-                                    answer={item.resposta} 
-                                    hasDelete={true}
-                                    onRemove={() => removeQuestion(item._id)}
-                                     />
+                                    <QuestionCard
+                                        key={index}
+                                        question={item.enunciado}
+                                        subject={item.tema}
+                                        answer={item.resposta}
+                                        hasDelete={true}
+                                        onRemove={() => removeQuestion(item._id)}
+                                    />
                                 ))}
                             </Grid>
 
@@ -185,6 +195,8 @@ export default function QuizEdit() {
                                 question={item.enunciado}
                                 subject={item.tema}
                                 answer={item.resposta}
+                                onCheck={() => handleCheck(item)}
+                                onUncheck={() => handleUncheck(item._id)}
                             />
                         ))
                     )}
