@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, Skeleton, TextField, Typography } from "@mui/material";
 import DarkSwal from '../components/DarkSwal';
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
@@ -20,7 +20,7 @@ export default function QuizEdit() {
     const [questions, setQuestions] = useState(null);
 
     const [questionsNotAdded, setQuestionsNotAdded] = useState([]);
-
+    
     const fabBackStyle = {
         position: 'fixed',
         bottom: 50,
@@ -38,6 +38,10 @@ export default function QuizEdit() {
     const handleClose = () => {
         setOpen(false);
         setQuestionsNotAdded([]);
+    };
+
+    const removeQuestion = (questionId) => {
+        setQuestions((prevQuestions) => prevQuestions.filter(q => q._id !== questionId));
     };
 
     useEffect(() => {
@@ -125,7 +129,14 @@ export default function QuizEdit() {
                                 </Box>
 
                                 {questions.map((item, index) => (
-                                    <QuestionCard key={index} question={item.enunciado} subject={item.tema} answer={item.resposta} hasDelete={true} />
+                                    <QuestionCard 
+                                    key={index} 
+                                    question={item.enunciado} 
+                                    subject={item.tema} 
+                                    answer={item.resposta} 
+                                    hasDelete={true}
+                                    onRemove={() => removeQuestion(item._id)}
+                                     />
                                 ))}
                             </Grid>
 
@@ -146,7 +157,7 @@ export default function QuizEdit() {
 
             <Dialog
                 open={open}
-                onClose={handleClose} 
+                onClose={handleClose}
                 PaperProps={{
                     component: 'form',
                     onSubmit: (event) => {
@@ -162,7 +173,11 @@ export default function QuizEdit() {
                     </DialogContentText>
 
                     {questionsNotAdded.length === 0 ? (
-                        <CircularProgress />
+                        <>
+                            <Skeleton variant="rectangular" width={500} height={225} sx={{ my: 2 }} />
+                            <Skeleton variant="rectangular" width={500} height={225} sx={{ my: 2 }} />
+                            <Skeleton variant="rectangular" width={500} height={225} sx={{ my: 2 }} />
+                        </>
                     ) : (
                         questionsNotAdded.map((item, index) => (
                             <QuestionCardWithCheckbox

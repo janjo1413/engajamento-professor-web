@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, Typography, Grid, Box, Container, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
-export default function QuestionCard({ question, subject, answer, hasDelete = false }) {
+export default function QuestionCard({ question, subject, answer, hasDelete = false, onRemove = null }) {
     const [isAnswerVisible, setIsAnswerVisible] = useState(false);
 
     return (
@@ -47,7 +47,7 @@ export default function QuestionCard({ question, subject, answer, hasDelete = fa
                     {
                         hasDelete && (
                             <Container sx={{ flexBasis: '10%'}}>
-                                <IconButton color="error" aria-label="Remover questão">
+                                <IconButton color="error" aria-label="Remover questão" onClick={onRemove}>
                                     <Close />
                                 </IconButton>
                             </Container>
