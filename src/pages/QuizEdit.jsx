@@ -53,6 +53,57 @@ export default function QuizEdit() {
         setQuestionsToAdd((prev) => prev.filter((q) => q._id !== questionId));
     };
 
+    const addQuestions = () => {
+        const questionsAdded = questions.concat(questionsToAdd)
+        setQuestions(questionsAdded);
+        setOpen(false);
+    }
+
+    const updateQuiz = async () => {
+        //se a descricao ta vazia ou se o n de questoes for zero, da mensagem de erro
+        // if(description.length === 0 || questions.length === 0){
+        // }
+
+        const questionsToEdit = questions.map(question => ({
+            enunciado: question.enunciado,
+            resposta: question.resposta,
+            tema: question.tema
+        }));
+        
+
+        const body = {
+            questionario: {
+                nome: quizName,
+                descricao: description,
+                questoes: questionsToEdit
+            }
+        }
+
+        // console.log(questionsToEdit);
+        // console.log(body);
+        // console.log(JSON.stringify(body))
+
+        await api.post('/updateQuestionario', JSON.stringify(body))
+        .then(response => {
+            DarkSwal.fire({
+                title: "Questionário editado com sucesso!",
+                icon: "success"
+            })
+
+            navigate('/');
+        })
+        .catch(error => {
+            DarkSwal.fire({
+                tile: "Houve um erro!",
+                title: "Não foi possível cadastrar o questionário!",
+                icon: "error"
+            })
+
+            console.error(error)
+        })
+
+    }
+
 
     useEffect(() => {
         async function getQuiz() {
@@ -156,7 +207,8 @@ export default function QuizEdit() {
                                 Voltar
                             </Fab>
 
-                            <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle} >
+                            <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle}
+                            onClick={updateQuiz}>
                                 <Save sx={{ mr: 1 }} />
                                 Salvar
                             </Fab>
@@ -168,6 +220,7 @@ export default function QuizEdit() {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                onSubmit={addQuestions}
                 PaperProps={{
                     component: 'form',
                     onSubmit: (event) => {

@@ -11,5 +11,4 @@ const DarkSwal = Swal.mixin({
     color: '#fff',
   });
   
-  export default DarkSwal;
-  
+export default DarkSwal;
