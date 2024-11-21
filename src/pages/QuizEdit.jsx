@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, Skeleton, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, Skeleton, Snackbar, TextField, Typography } from "@mui/material";
 import DarkSwal from '../components/DarkSwal';
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
@@ -14,6 +14,7 @@ export default function QuizEdit() {
 
     const [open, setOpen] = useState(false);
     const [error, setError] = useState(false);
+    const [editError, setEditError] = useState(false);
 
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
@@ -59,10 +60,20 @@ export default function QuizEdit() {
         setOpen(false);
     }
 
+    const handleCloseMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setEditError(false);
+    }
+
     const updateQuiz = async () => {
         //se a descricao ta vazia ou se o n de questoes for zero, da mensagem de erro
-        // if(description.length === 0 || questions.length === 0){
-        // }
+        if(description.length === 0 || questions.length === 0){
+            setEditError(true);
+            return;
+        }
 
         const questionsToEdit = questions.map(question => ({
             enunciado: question.enunciado,
@@ -260,6 +271,19 @@ export default function QuizEdit() {
                     <Button type="submit">Adicionar questões</Button>
                 </DialogActions>
             </Dialog>
+
+            <Snackbar open={editError} autoHideDuration={3000} onClose={handleCloseMessage}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert
+                    onClose={handleCloseMessage}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: '100%' }}
+                >
+                    Descrição e questões são obrigatórios
+                </Alert>
+            </Snackbar>
+
         </Container>
     )
 }
