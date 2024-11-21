@@ -12,7 +12,6 @@ export default function NewQuiz() {
     const [quizDescription, setQuizDescription] = useState('');
     const [quizData, setQuizData] = useState(null);
     const [visible, setVisible] = useState(false);
-    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
@@ -39,14 +38,6 @@ export default function NewQuiz() {
             }
         }
     };
-
-    const handleCloseMessage = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setError(false);
-    }
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
@@ -85,11 +76,6 @@ export default function NewQuiz() {
 
 
     const saveQuiz = async () => {
-        if (!quizName || !quizDescription || !quizData) {
-            setError(true);
-            return;
-        }
-
         const savedQuestions = quizData.map(question => {
             return {
                 enunciado: question[0],
@@ -247,24 +233,12 @@ export default function NewQuiz() {
                     <Button
                         variant="contained"
                         startIcon={<Save />}
+                        disabled={!quizName || !quizDescription || !quizData}
                         onClick={saveQuiz}>
                         Salvar Questionário
                     </Button>
                 </Grid>
             </Grid>
-
-            <Snackbar open={error} autoHideDuration={3000} onClose={handleCloseMessage}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert
-                    onClose={handleCloseMessage}
-                    severity="error"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Preencha todos os campos
-                </Alert>
-            </Snackbar>
-
         </Box>
     )
 }

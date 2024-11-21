@@ -21,7 +21,6 @@ const fabStyle = {
 
 export default function Quizzes() {
     const [open, setOpen] = useState(false);
-    const [error, setError] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
 
     const { quizzes, refetch } = useQuizzes();
@@ -43,7 +42,6 @@ export default function Quizzes() {
 
     const handleClose = () => {
         setOpen(false);
-        setError(false);
         setClassRoom('');
     };
 
@@ -51,20 +49,7 @@ export default function Quizzes() {
         setClassRoom(classSelected);
     };
 
-    const handleCloseMessage = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setError(false);
-    }
-
     const beginQuiz = () => {
-        if (classRoom === '') {
-            setError(true);
-            return;
-        }
-
         setOpen(false);
         navigate(`/quiz?quizId=${quiz._id}&classId=${classRoom._id}`);
     }
@@ -162,22 +147,9 @@ export default function Quizzes() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancelar</Button>
-                    <Button type="submit">Aplicar questionário</Button>
+                    <Button type="submit" disabled={classRoom === ''}>Aplicar questionário</Button>
                 </DialogActions>
             </Dialog>
-
-            <Snackbar open={error} autoHideDuration={3000} onClose={handleCloseMessage}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert
-                    onClose={handleCloseMessage}
-                    severity="error"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Selecione uma turma para continuar
-                </Alert>
-            </Snackbar>
-
         </Box>
     )
 }

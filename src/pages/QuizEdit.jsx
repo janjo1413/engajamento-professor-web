@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Alert, Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, Skeleton, Snackbar, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, Skeleton, TextField, Typography } from "@mui/material";
 import DarkSwal from '../components/DarkSwal';
 import api from "../services/api";
 import { useQuizClass } from "../contexts/QuizClassContext";
@@ -14,7 +14,6 @@ export default function QuizEdit() {
 
     const [open, setOpen] = useState(false);
     const [error, setError] = useState(false);
-    const [editError, setEditError] = useState(false);
 
     const [quizName, setQuizName] = useState(null);
     const [description, setDescription] = useState(null);
@@ -40,6 +39,7 @@ export default function QuizEdit() {
     const handleClose = () => {
         setOpen(false);
         setQuestionsNotAdded([]);
+        setQuestionsToAdd([]);
     };
 
     const removeQuestion = (questionId) => {
@@ -60,21 +60,7 @@ export default function QuizEdit() {
         setOpen(false);
     }
 
-    const handleCloseMessage = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setEditError(false);
-    }
-
     const updateQuiz = async () => {
-        //se a descricao ta vazia ou se o n de questoes for zero, da mensagem de erro
-        if(description.length === 0 || questions.length === 0){
-            setEditError(true);
-            return;
-        }
-
         const questionsToEdit = questions.map(question => ({
             enunciado: question.enunciado,
             resposta: question.resposta,
@@ -219,7 +205,7 @@ export default function QuizEdit() {
                             </Fab>
 
                             <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle}
-                            onClick={updateQuiz}>
+                            onClick={updateQuiz} disabled={description.length === 0 || questions.length === 0}>
                                 <Save sx={{ mr: 1 }} />
                                 Salvar
                             </Fab>
@@ -229,6 +215,8 @@ export default function QuizEdit() {
             }
 
             <Dialog
+                fullWidth={true}
+                maxWidth="lg"
                 open={open}
                 onClose={handleClose}
                 onSubmit={addQuestions}
@@ -248,9 +236,9 @@ export default function QuizEdit() {
 
                     {questionsNotAdded.length === 0 ? (
                         <>
-                            <Skeleton variant="rectangular" width={500} height={225} sx={{ my: 2 }} />
-                            <Skeleton variant="rectangular" width={500} height={225} sx={{ my: 2 }} />
-                            <Skeleton variant="rectangular" width={500} height={225} sx={{ my: 2 }} />
+                            <Skeleton variant="rectangular" width={1200} height={175} sx={{ my: 2 }} />
+                            <Skeleton variant="rectangular" width={1200} height={175} sx={{ my: 2 }} />
+                            <Skeleton variant="rectangular" width={1200} height={175} sx={{ my: 2 }} />
                         </>
                     ) : (
                         questionsNotAdded.map((item, index) => (
@@ -268,22 +256,9 @@ export default function QuizEdit() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancelar</Button>
-                    <Button type="submit">Adicionar questões</Button>
+                    <Button type="submit" disabled={questionsToAdd.length === 0}>Adicionar questões</Button>
                 </DialogActions>
             </Dialog>
-
-            <Snackbar open={editError} autoHideDuration={3000} onClose={handleCloseMessage}
-                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                <Alert
-                    onClose={handleCloseMessage}
-                    severity="error"
-                    variant="filled"
-                    sx={{ width: '100%' }}
-                >
-                    Descrição e questões são obrigatórios
-                </Alert>
-            </Snackbar>
-
         </Container>
     )
 }
