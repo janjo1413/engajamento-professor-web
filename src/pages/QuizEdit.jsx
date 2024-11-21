@@ -227,6 +227,7 @@ export default function QuizEdit() {
                         // beginQuiz();
                     },
                 }}
+                sx={{ maxHeight: '90vh'}}
             >
                 <DialogTitle>Adicionar questões</DialogTitle>
                 <DialogContent>
