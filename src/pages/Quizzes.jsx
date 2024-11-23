@@ -69,7 +69,7 @@ export default function Quizzes() {
                 )
             }
 
-            <Grid container spacing={4}>
+            <Grid container spacing={4} sx={{ mb: 15 }}>
 
                 {
                     quizzes ? (

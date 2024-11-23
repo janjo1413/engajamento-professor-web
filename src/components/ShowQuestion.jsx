@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import api from '../services/api';
-import { Button, CircularProgress, IconButton, Paper, Stack } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Grid, IconButton, Paper, Stack } from "@mui/material";
 import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import ProgressBar from "./ProgressBar";
@@ -50,7 +50,7 @@ export default function ShowQuestion({ onFinishQuiz }) {
   }, [timeIsOver]);
 
   return (
-    <Stack spacing={4}
+    <Stack spacing={6}
       sx={{
         mt: 4,
         justifyContent: "center",
@@ -66,7 +66,7 @@ export default function ShowQuestion({ onFinishQuiz }) {
               key={key}
               isPlaying
               duration={15}
-              size={120}
+              size={110}
               strokeWidth={6}
               colors={['#663399', '#93000a']}
               colorsTime={[15, 0]}
@@ -79,45 +79,45 @@ export default function ShowQuestion({ onFinishQuiz }) {
       }
 
       <Typography variant="h5">Questão {currentQuestionIndex + 1} de {quiz.questoes.length}</Typography>
-      <ProgressBar current={currentQuestionIndex + 1} target={quiz.questoes.length}/>
+      <ProgressBar current={currentQuestionIndex + 1} target={quiz.questoes.length} />
 
       <Typography variant="h5">{quiz.questoes[currentQuestionIndex].enunciado}</Typography>
 
-      <Typography variant="h5">Responda <span style={{ color: '#1E90FF' }}>Verdadeiro</span> ou <span style={{ color: '#FF4500' }}>Falso</span></Typography>
+      {
+        !timeIsOver && (
+          <Typography variant="h5">Responda <span style={{ color: '#1E90FF' }}>Verdadeiro</span> ou <span style={{ color: '#FF4500' }}>Falso</span></Typography>
+        )
+      }
 
       {timeIsOver && (
-        <Stack spacing={4}
-        sx={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
-          <Typography variant="h5">Resposta correta</Typography>
-
-          {
-            visible ?
-              <IconButton onClick={() => setVisible(!visible)} disabled={!timeIsOver}>
-                <VisibilityOff />
-              </IconButton>
-
-              :
-
-              <IconButton onClick={() => setVisible(!visible)} disabled={!timeIsOver}>
-                <RemoveRedEye />
-              </IconButton>
-
-          }
+        <Stack spacing={5} width={'35%'}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around'
+          }}>
+          <Typography variant="h5" sx={{ mr: 3 }}>Resposta correta: </Typography>
 
           {
             visible ?
               (
                 quiz.questoes[currentQuestionIndex].resposta === 'V' ?
-                  <Typography variant='h4'>Verdadeiro</Typography>
+                  <Typography variant='h5'
+                    onClick={() => setVisible(!visible)}>
+                    <span style={{ color: '#1E90FF' }}>Verdadeiro</span>
+                  </Typography>
                   :
-                  <Typography variant='h4'>Falso</Typography>
+                  <Typography variant='h5'
+                    onClick={() => setVisible(!visible)}>
+                    <span style={{ color: '#FF4500' }}>Falso</span>
+                  </Typography>
               ) : (
-                <Paper elevation={4} sx={{ p: 4, mx: 'auto', width: 200 }}></Paper>
+                <Paper elevation={4} sx={{ p: 2.5, width: 150 }}
+                  onClick={() => setVisible(!visible)}>
+                </Paper>
               )
           }
+          </Box>
 
           {
             showSpinner ? (
