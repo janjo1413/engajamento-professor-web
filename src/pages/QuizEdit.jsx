@@ -72,13 +72,10 @@ export default function QuizEdit() {
             questionario: {
                 nome: quizName,
                 descricao: description,
+                codigo: quizCode,
                 questoes: questionsToEdit
             }
         }
-
-        // console.log(questionsToEdit);
-        // console.log(body);
-        // console.log(JSON.stringify(body))
 
         await api.post('/updateQuestionario', JSON.stringify(body))
         .then(response => {
