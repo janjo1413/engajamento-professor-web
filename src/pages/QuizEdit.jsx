@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, CircularProgress, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, Skeleton, TextField, Typography } from "@mui/material";
 import DarkSwal from '../components/DarkSwal';
@@ -7,6 +7,7 @@ import { useQuizClass } from "../contexts/QuizClassContext";
 import QuestionCard from "../components/QuestionCard";
 import { ArrowBack, Save } from "@mui/icons-material";
 import QuestionCardWithCheckbox from "../components/QuestionCardWithCheckbox";
+import update from 'immutability-helper';
 
 export default function QuizEdit() {
     const { quizCode } = useQuizClass();
@@ -42,6 +43,32 @@ export default function QuizEdit() {
         setQuestionsToAdd([]);
     };
 
+    const moveCard = useCallback((dragIndex, hoverIndex) => {
+        setQuestions((prevCards) =>
+            update(prevCards, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, prevCards[dragIndex]],
+                ],
+            }),
+        )
+    }, [])
+
+    const renderCard = useCallback((item, index) => {
+        return (
+            <QuestionCard
+                key={index}
+                index={index}
+                question={item.enunciado}
+                subject={item.tema}
+                answer={item.resposta}
+                hasDelete={true}
+                onRemove={() => removeQuestion(item._id)}
+                moveCard={moveCard}
+            />
+        )
+    }, [])
+
     const removeQuestion = (questionId) => {
         setQuestions((prevQuestions) => prevQuestions.filter(q => q._id !== questionId));
     };
@@ -66,7 +93,7 @@ export default function QuizEdit() {
             resposta: question.resposta,
             tema: question.tema
         }));
-        
+
 
         const body = {
             questionario: {
@@ -78,23 +105,23 @@ export default function QuizEdit() {
         }
 
         await api.post('/updateQuestionario', JSON.stringify(body))
-        .then(response => {
-            DarkSwal.fire({
-                title: "Questionário editado com sucesso!",
-                icon: "success"
-            })
+            .then(response => {
+                DarkSwal.fire({
+                    title: "Questionário editado com sucesso!",
+                    icon: "success"
+                })
 
-            navigate('/');
-        })
-        .catch(error => {
-            DarkSwal.fire({
-                tile: "Houve um erro!",
-                title: "Não foi possível cadastrar o questionário!",
-                icon: "error"
+                navigate('/');
             })
+            .catch(error => {
+                DarkSwal.fire({
+                    tile: "Houve um erro!",
+                    title: "Não foi possível cadastrar o questionário!",
+                    icon: "error"
+                })
 
-            console.error(error)
-        })
+                console.error(error)
+            })
 
     }
 
@@ -183,16 +210,16 @@ export default function QuizEdit() {
                                     <Button variant="text" onClick={() => openAddQuestionsModal()}>Adicionar</Button>
                                 </Box>
 
-                                {questions.map((item, index) => (
-                                    <QuestionCard
-                                        key={index}
-                                        question={item.enunciado}
-                                        subject={item.tema}
-                                        answer={item.resposta}
-                                        hasDelete={true}
-                                        onRemove={() => removeQuestion(item._id)}
-                                    />
-                                ))}
+                                {questions.map((item, index) => renderCard(item, index)
+                                    // <QuestionCard
+                                    //     key={index}
+                                    //     question={item.enunciado}
+                                    //     subject={item.tema}
+                                    //     answer={item.resposta}
+                                    //     hasDelete={true}
+                                    //     onRemove={() => removeQuestion(item._id)}
+                                    // />
+                                )}
                             </Grid>
 
                             <Fab variant="extended" color="primary" aria-label="Salvar questionário" sx={fabBackStyle}
@@ -202,7 +229,7 @@ export default function QuizEdit() {
                             </Fab>
 
                             <Fab variant="extended" color="success" aria-label="Salvar questionário" sx={fabSaveStyle}
-                            onClick={updateQuiz} disabled={description.length === 0 || questions.length === 0}>
+                                onClick={updateQuiz} disabled={description.length === 0 || questions.length === 0}>
                                 <Save sx={{ mr: 1 }} />
                                 Salvar
                             </Fab>
@@ -224,7 +251,7 @@ export default function QuizEdit() {
                         // beginQuiz();
                     },
                 }}
-                sx={{ maxHeight: '90vh'}}
+                sx={{ maxHeight: '90vh' }}
             >
                 <DialogTitle>Adicionar questões</DialogTitle>
                 <DialogContent>
