@@ -69,7 +69,7 @@ export default function QuestionCard({ index, question, subject, answer, hasDele
     return (
         <div ref={ref} style={{ opacity }} data-handler-id={handlerId}>
             <Grid item xs={12}>
-                <Card sx={{ mb: 4, height: '100%' }}>
+                <Card sx={{ mb: 4, height: '100%', transition: 'transform 0.2s ease, background-color 0.2s ease', }}>
                     <CardContent sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
                         <Container sx={{ display: 'flex', flexDirection: 'column' }}>
                             <Typography variant="h6" component="div">
