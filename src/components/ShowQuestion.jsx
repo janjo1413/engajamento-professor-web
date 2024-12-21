@@ -5,10 +5,12 @@ import api from '../services/api';
 import { Box, Button, CircularProgress, Container, Grid, IconButton, Paper, Stack } from "@mui/material";
 import { RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 import { useQuizClass } from '../contexts/QuizClassContext';
+import getReadingTime from '../utils/getReadingTime';
 import ProgressBar from "./ProgressBar";
 
 export default function ShowQuestion({ onFinishQuiz }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [timer, setTimer] = useState(0);
   const [timeIsOver, setTimeIsOver] = useState(false);
   const [key, setKey] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -40,6 +42,13 @@ export default function ShowQuestion({ onFinishQuiz }) {
   };
 
   useEffect(() => {
+    if (quiz && quiz.questoes && quiz.questoes[currentQuestionIndex]) {
+      const readingTime = getReadingTime(quiz.questoes[currentQuestionIndex].enunciado);
+      setTimer(readingTime);
+    }
+  }, [currentQuestionIndex, quiz]);
+
+  useEffect(() => {
     if (timeIsOver) {
       setShowSpinner(true);
       setTimeout(() => {
@@ -65,11 +74,11 @@ export default function ShowQuestion({ onFinishQuiz }) {
             <CountdownCircleTimer
               key={key}
               isPlaying
-              duration={15}
+              duration={timer}
               size={110}
               strokeWidth={6}
               colors={['#663399', '#93000a']}
-              colorsTime={[15, 0]}
+              colorsTime={[timer, 0]}
               onComplete={() => setTimeIsOver(true)}
             >
               {renderTime}
