@@ -120,7 +120,7 @@ export default function PersistentDrawerLeft() {
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={logo} alt="Logo" />
                         <Typography variant="h6" noWrap component="div">
-                            EngageQuiz
+                            EngajaEdu
                         </Typography>
                     </div>
 
