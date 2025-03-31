@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
-import { Avatar, Button, Card, CardHeader, CircularProgress, Container, Grid, Typography } from "@mui/material";
+import {
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Card,
+    CardHeader,
+    CircularProgress,
+    Container,
+    Grid,
+    IconButton,
+    Typography
+} from "@mui/material";
+import GroupIcon from '@mui/icons-material/Group';
+
 import api from '../services/api';
 import { useQuizClass } from '../contexts/QuizClassContext';
 import getFirstNames from "../utils/getFirstNames";
 import '../css/animation.css';
 import StudentCard from "./StudentCard";
-
-// const StudentCard = ({ student }) => {
-//     return (
-//         <Grid item xs={3}>
-//             <Card key={student.matricula}>
-//                 <CardHeader
-//                     avatar={
-//                         <Avatar aria-label="student">
-//                             {student.nome[0]}
-//                         </Avatar>
-//                     }
-//                     title={getFirstNames(student.nome)}
-//                     subheader={student.matricula}
-//                 />
-//             </Card>
-//         </Grid>
-//     )
-// }
 
 export default function Lobby({ onStartQuiz }) {
     const [classLoaded, setClassLoaded] = useState(false);
@@ -38,45 +34,42 @@ export default function Lobby({ onStartQuiz }) {
         const reset = async () => {
             await api.post('/conectaQuestionario', JSON.stringify({ valor: false }))
                 .then((response) => { console.log(response.data) })
-                .catch((error) => { console.error(error) })
-
-            //await api.get('/limparEstado').then(response => {});
-        }
+                .catch((error) => { console.error(error) });
+        };
 
         const getQuizCode = async () => {
-            await api.get('/gerarCodigo').then(response => setQuizCode(response.data))
-        }
+            await api.get('/gerarCodigo').then(response => setQuizCode(response.data));
+        };
 
         const loadQuiz = async () => {
             await api.post('/carregaQuestionario', JSON.stringify({ codigoQuestionario: quiz.codigo }))
                 .then(response => {
                     setQuiz(response.data);
-                    setQuizLoaded(true)
+                    setQuizLoaded(true);
                 })
                 .catch(error => {
-                    console.error(error)
-                })
-        }
+                    console.error(error);
+                });
+        };
 
         const loadClass = async () => {
             await api.post('/carregaTurma', JSON.stringify({ codigoTurma: classRoom.codigo }))
                 .then(response => {
-                    setClassLoaded(true)
+                    setClassLoaded(true);
                 })
                 .catch(error => {
-                    console.error(error)
-                })
-        }
+                    console.error(error);
+                });
+        };
 
         reset();
         loadQuiz();
         loadClass();
         getQuizCode();
-    }, [])
+    }, []);
 
     useEffect(() => {
-        if (!classLoaded) return;
-        if (!quizLoaded) return;
+        if (!classLoaded || !quizLoaded) return;
 
         const getConnectedStudents = async () => {
             await api.get('/alunosConectados')
@@ -84,9 +77,9 @@ export default function Lobby({ onStartQuiz }) {
                     setConnectedStudents(response.data);
                 })
                 .catch(error => {
-                    console.error(error)
-                })
-        }
+                    console.error(error);
+                });
+        };
 
         const id = setInterval(getConnectedStudents, 3000);
         setIntervalId(id);
@@ -95,25 +88,18 @@ export default function Lobby({ onStartQuiz }) {
     }, [classLoaded, quizLoaded]);
 
     const liberarQuestionario = async () => {
-        if (intervalId) {
-            clearInterval(intervalId);
-        }
+        if (intervalId) clearInterval(intervalId);
 
         await api.post('/conectaQuestionario', JSON.stringify({ valor: true }))
             .then((response) => {
-                console.log(response)
+                console.log(response);
                 onStartQuiz();
             })
             .catch((error) => { console.error(error) });
-    }
+    };
 
     useEffect(() => {
-        // Simulate loading for 3 seconds
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-
-        // Clean up timer on component unmount
+        const timer = setTimeout(() => setIsLoading(false), 2000);
         return () => clearTimeout(timer);
     }, []);
 
@@ -140,12 +126,22 @@ export default function Lobby({ onStartQuiz }) {
                     </div>
                 ) : (
                     <>
-                        <Typography variant="h4" sx={{ my: 4 }}>Alunos conectados</Typography>
+                        <Box display="flex" alignItems="center" justifyContent="center" gap={2} sx={{ my: 4 }}>
+                            <Typography variant="h4">Alunos conectados</Typography>
+                            <Badge
+                                badgeContent={connectedStudents.length}
+                                color="primary"
+                                showZero
+                                sx={{ '& .MuiBadge-badge': { fontSize: '1rem', height: 24, minWidth: 24 } }}
+                            >
+                                <GroupIcon fontSize="large" />
+                            </Badge>
+                        </Box>
 
                         <Grid container spacing={4} direction="row">
                             {
                                 connectedStudents.map(student => (
-                                    <StudentCard student={student} />
+                                    <StudentCard student={student} key={student.matricula} />
                                 ))
                             }
                         </Grid>
@@ -160,5 +156,5 @@ export default function Lobby({ onStartQuiz }) {
                 )
             }
         </Container >
-    )
+    );
 }
