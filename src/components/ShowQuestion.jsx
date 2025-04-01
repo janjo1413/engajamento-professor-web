@@ -90,7 +90,11 @@ export default function ShowQuestion({ onFinishQuiz }) {
       <Typography variant="h5">Questão {currentQuestionIndex + 1} de {quiz.questoes.length}</Typography>
       <ProgressBar current={currentQuestionIndex + 1} target={quiz.questoes.length} />
 
-      <Typography variant="h5">{quiz.questoes[currentQuestionIndex].enunciado}</Typography>
+      <Box sx={{ maxWidth: '90%', wordBreak: 'break-word', textAlign: 'center' }}>
+        <Typography variant="h5">
+          {quiz.questoes[currentQuestionIndex].enunciado}
+        </Typography>
+      </Box>
 
       {
         !timeIsOver && (
@@ -105,27 +109,42 @@ export default function ShowQuestion({ onFinishQuiz }) {
             alignItems: 'center',
             justifyContent: 'space-around'
           }}>
-          <Typography variant="h5" sx={{ mr: 3 }}>Resposta correta: </Typography>
+            <Typography variant="h5" sx={{ mr: 3 }}>Resposta correta: </Typography>
 
-          {
-            visible ?
-              (
-                quiz.questoes[currentQuestionIndex].resposta === 'V' ?
-                  <Typography variant='h5'
-                    onClick={() => setVisible(!visible)}>
-                    <span style={{ color: '#1E90FF' }}>Verdadeiro</span>
-                  </Typography>
-                  :
-                  <Typography variant='h5'
-                    onClick={() => setVisible(!visible)}>
-                    <span style={{ color: '#FF4500' }}>Falso</span>
-                  </Typography>
-              ) : (
-                <Paper elevation={4} sx={{ p: 2.5, width: 150 }}
-                  onClick={() => setVisible(!visible)}>
-                </Paper>
-              )
-          }
+            {visible ? (
+              <Typography
+                variant="h6"
+                sx={{
+                  backgroundColor: quiz.questoes[currentQuestionIndex].resposta === 'V' ? '#1E90FF' : '#FF4500',
+                  color: '#fff',
+                  px: 2,
+                  py: 1,
+                  borderRadius: 2,
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  minWidth: 120
+                }}
+                onClick={() => setVisible(!visible)}
+              >
+                {quiz.questoes[currentQuestionIndex].resposta === 'V' ? 'Verdadeiro' : 'Falso'}
+              </Typography>
+            ) : (
+              <Paper
+                elevation={4}
+                sx={{
+                  p: 2.5,
+                  width: 150,
+                  cursor: 'pointer',
+                  backgroundColor: '#ccc',
+                  borderRadius: 2,
+                  textAlign: 'center'
+                }}
+                onClick={() => setVisible(!visible)}
+              >
+                Mostrar
+              </Paper>
+            )}
           </Box>
 
           {
@@ -145,8 +164,7 @@ export default function ShowQuestion({ onFinishQuiz }) {
             )
           }
         </Stack>
-      )
-      }
+      )}
     </Stack>
   )
 }
