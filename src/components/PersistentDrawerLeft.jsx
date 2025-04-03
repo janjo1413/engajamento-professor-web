@@ -19,176 +19,149 @@ import ListItemText from '@mui/material/ListItemText';
 import QuizIcon from '@mui/icons-material/Quiz';
 import ClassIcon from '@mui/icons-material/School';
 
-import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-
-import Quizzes from '../pages/Quizzes';
-import Classes from '../pages/Classes';
-import NewQuiz from '../pages/NewQuiz';
-import NewClass from '../pages/NewClass';
-import QuizApply from '../pages/QuizApply';
-import QuizDetails from '../pages/QuizDetails';
-import ClassDetails from '../pages/ClassDetails';
-import QuizEdit from '../pages/QuizEdit';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 
 import logo from '../assets/logo.png';
 
 let drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        flexGrow: 1,
-        padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginLeft: `-${drawerWidth}px`,
-        ...(open && {
-            transition: theme.transitions.create('margin', {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            marginLeft: 0,
-        }),
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
     }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  }),
 );
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
+  }),
 }));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
 }));
 
 export default function PersistentDrawerLeft() {
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(true);
-    const location = useLocation();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(true);
+  const location = useLocation();
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
-    const isQuizScreen = location.pathname === '/quiz';
-    drawerWidth = isQuizScreen ? 0 : 240;
+  // Mostra o drawer apenas nas rotas internas (quizzes e classes)
+  const isDrawerRoute = location.pathname.startsWith("/quizzes") || location.pathname.startsWith("/classes");
+  drawerWidth = isDrawerRoute ? 240 : 0;
 
-    // Programmatically close the drawer when on /show route
-    React.useEffect(() => {
-        if (location.pathname === '/quiz') {
-            setOpen(false);
-        }
-    }, [location]);  // Re-run effect when location changes
+  React.useEffect(() => {
+    if (!isDrawerRoute) {
+      setOpen(false);
+    }
+  }, [isDrawerRoute]);
 
-    return (
-        <Box sx={{ display: 'flex' }}>
-            <AppBar position="fixed" open={open} sx={{ py: 1 }}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                        disabled={isQuizScreen}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <AppBar position="fixed" open={open} sx={{ py: 1 }}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            disabled={!isDrawerRoute}
+          >
+            <MenuIcon />
+          </IconButton>
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={logo} alt="Logo" />
-                        <Typography variant="h6" noWrap component="div">
-                            EngajaEdu
-                        </Typography>
-                    </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="Logo" />
+            <Typography variant="h6" noWrap component="div">
+              EngajaEdu
+            </Typography>
+          </div>
+        </Toolbar>
+      </AppBar>
 
-                </Toolbar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <DrawerHeader sx={{ py: 2.45 }}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </DrawerHeader>
 
-            </AppBar>
+        <Divider />
 
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="persistent"
-                anchor="left"
-                open={open}
-            >
-                <DrawerHeader sx={{ py: 2.45 }} > 
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </DrawerHeader>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/quizzes">
+              <ListItemIcon>
+                <QuizIcon />
+              </ListItemIcon>
+              <ListItemText primary="Questionários" />
+            </ListItemButton>
+          </ListItem>
 
-                <Divider />
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/classes">
+              <ListItemIcon>
+                <ClassIcon />
+              </ListItemIcon>
+              <ListItemText primary="Turmas" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Drawer>
 
-                <List>
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to="/quizzes">
-                            <ListItemIcon>
-                                <QuizIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Questionários" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding>
-                        <ListItemButton component={Link} to="/classes">
-                            <ListItemIcon>
-                                <ClassIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Turmas" />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-
-            </Drawer>
-
-            <Main open={open}>
-                <DrawerHeader />
-
-                <Routes>
-                    <Route path="/" element={<Navigate to="/quizzes" />} />
-                    <Route path="/quizzes" element={<Quizzes />} />
-                    <Route path="/classes" element={<Classes />} />
-                    <Route path="/quizzes/new" element={<NewQuiz />} />
-                    <Route path="/classes/new" element={<NewClass />} />
-
-                    <Route path="/quiz" element={<QuizApply />} />
-                    <Route path="/quizzes/:quizCode" element={<QuizDetails />} />
-                    <Route path="/classes/:classCode" element={<ClassDetails />} />
-                    <Route path="/quizzes/:quizCode/edit" element={<QuizEdit />} />
-
-                </Routes>
-
-            </Main>
-        </Box>
-    );
+      <Main open={open}>
+        <DrawerHeader />
+        <Outlet />
+      </Main>
+    </Box>
+  );
 }
