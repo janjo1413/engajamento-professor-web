@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-// import api from "../services/api"; // quando for usar o backend
-import DarkSwal from "../components/DarkSwal"; // alertas bonitos
+import DarkSwal from "../components/DarkSwal";
+import api from "../services/api";
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -10,45 +10,39 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    
-    /*
     try {
-      const response = await api.post('/login', {
-        email,
-        password
+      const response = await api.post('/getUsuario', {
+        usuario: email,
+        senha: password
       });
 
-      const { token } = response.data;
-      localStorage.setItem("token", token);
+      const data = response.data;
+
+      console.log("🔍 Resposta da API:", data);
+
+      const isInvalid =
+        !data ||
+        (typeof data === "object" && Object.keys(data).length === 0) ||
+        (typeof data === "string" && data.trim() === "") ||
+        (Array.isArray(data) && data.length === 0);
+
+      if (isInvalid) {
+        throw new Error("Login inválido");
+      }
 
       DarkSwal.fire({
-        title: "Login realizado com sucesso!",
+        title: "Login realizado!",
         icon: "success"
       });
+
 
       navigate("/quizzes");
 
     } catch (error) {
+      console.error("❌ Erro ao fazer login:", error);
       DarkSwal.fire({
         title: "Erro ao fazer login",
-        text: "E-mail ou senha incorretos",
-        icon: "error"
-      });
-    }
-    */
-
-    
-    if (email === "prof@teste.com" && password === "123456") {
-      DarkSwal.fire({
-        title: "Login simulado com sucesso!",
-        icon: "success"
-      });
-
-      navigate("/quizzes");
-    } else {
-      DarkSwal.fire({
-        title: "Login inválido",
-        text: "E-mail ou senha estão incorretos.",
+        text: "Usuário ou senha incorretos.",
         icon: "error"
       });
     }
@@ -57,7 +51,7 @@ export default function LoginForm() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 4 }}>
       <TextField
-        label="E-mail"
+        label="Usuário"
         variant="outlined"
         fullWidth
         value={email}
